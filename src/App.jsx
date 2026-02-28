@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 
 /* ── LOGO SVG (fiel al original: capas degradadas cian→azul→púrpura + punto naranja + línea) ── */
-const Forma3DLogo = ({ height = 48 }) => (
+export const Forma3DLogo = ({ height = 48 }) => (
   <svg height={height} viewBox="0 0 260 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Forma3D logo">
     <defs>
       <linearGradient id="layer1" x1="0" y1="0" x2="0" y2="1"><stop stopColor="#7AEEFF"/><stop offset="1" stopColor="#5BC8F5"/></linearGradient>
