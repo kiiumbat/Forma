@@ -599,9 +599,8 @@ const Star = ({ filled }) => (
 const PRODUCTOS = [
   { id:1, nombre:"Soporte Móviles/Tablets", material:"PLA Marmolado",    emoji:"📱", badge:null,             rating:4.9, reviews:127, color:["#22D3EE","#5B8CFF"], desc:"Soporte de escritorio para móviles y tablets impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica." },
   { id:2, nombre:"Velas Aromáticas",         material:"Cera de Soja",     emoji:"🕯️", badge:null,             rating:4.7, reviews:88,  color:["#F59E0B","#F97316"], desc:"Velas artesanales con cera de soja natural. Aromas relajantes para el hogar, en múltiples tamaños y fragancias." },
-  { id:3, nombre:"Soporte Auriculares",      material:"PETG Resistente",  emoji:"🎧", badge:"Nuevo",          rating:4.8, reviews:64,  color:["#A855F7","#5B8CFF"], desc:"Soporte de escritorio ergonómico en PETG de alta resistencia y acabado mate premium." },
-  { id:4, nombre:"Llaveros Personalizados",  material:"PLA Multicolor",   emoji:"🔑", badge:"Personalizable", rating:4.8, reviews:214, color:["#A855F7","#EC4899"], desc:"Llaveros con tu nombre, iniciales, logo o diseño. Impresos en PLA de alta calidad con acabado premium." },
-  { id:5, nombre:"Figuras Artesanales",      material:"Resina Premium",   emoji:"🗿", badge:"Ed. Limitada",   rating:4.9, reviews:76,  color:["#F97316","#EAB308"], desc:"Figuras artesanales en resina de alta resolución. Detalle extremo para coleccionistas y regalos únicos." },
+  { id:4, nombre:"Llaveros Personalizados",  material:"PLA Multicolor",   emoji:"🔑", badge:"Personalizable", rating:4.8, reviews:214, color:["#A855F7","#EC4899"], desc:"Llaveros con tu nombre, iniciales, logo o diseño y con opcion de añadir nfc. Impresos en PLA de alta calidad con acabado premium." },
+  { id:5, nombre:"Figuras Artesanales",      material:"Resina Premium",   emoji:"🗿", badge:"Ed. Limitada",   rating:4.9, reviews:76,  color:["#F97316","#EAB308"], desc:"Figuras artesanales en resina de alta resolución.regalos únicos." },
 ];
 
 const TELEFONO = "34123456789";
