@@ -603,7 +603,7 @@ const PRODUCTOS = [
   { id:5, nombre:"Figuras Artesanales",      material:"Resina Premium",   emoji:"🗿", badge:"Ed. Limitada",  color:["#F97316","#EAB308"], desc:"Figuras artesanales en resina de alta resolución.regalos únicos." },
 ];
 
-const TELEFONO = "34641849874";
+const TELEFONO = "34614819874";
 
 /* ─── MAIN ─── */
 export default function Forma3D() {
