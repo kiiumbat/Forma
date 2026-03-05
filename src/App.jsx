@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 /* ─── GLOBAL STYLES ─── */
 const GlobalStyles = () => (
@@ -36,12 +36,10 @@ const GlobalStyles = () => (
       overflow-x: hidden;
     }
 
-    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: var(--black); }
     ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
 
-    /* ── Noise grain overlay ── */
     #grain {
       pointer-events: none;
       position: fixed;
@@ -51,7 +49,6 @@ const GlobalStyles = () => (
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* ── Backgrounds ── */
     #bg-mesh {
       pointer-events: none;
       position: fixed;
@@ -64,12 +61,10 @@ const GlobalStyles = () => (
         var(--black);
     }
 
-    /* ── Typography utilities ── */
     .display { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.02em; line-height: 0.92; }
     .serif   { font-family: 'Instrument Serif', serif; }
     .mono    { font-family: 'DM Mono', monospace; font-weight: 300; }
 
-    /* ── Shimmer ── */
     @keyframes shimmer {
       0%   { background-position: -200% center; }
       100% { background-position:  200% center; }
@@ -83,7 +78,6 @@ const GlobalStyles = () => (
       animation: shimmer 4s linear infinite;
     }
 
-    /* ── Fade-up keyframe ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -94,7 +88,7 @@ const GlobalStyles = () => (
     .fu-3 { animation-delay: 0.4s; }
     .fu-4 { animation-delay: 0.55s; }
 
-    /* ──────────────── NAVBAR ──────────────── */
+    /* ── NAVBAR ── */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
@@ -108,9 +102,7 @@ const GlobalStyles = () => (
       backdrop-filter: blur(20px);
       border-color: var(--border);
     }
-    .nav-links {
-      display: flex; gap: 36px; list-style: none;
-    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
     .nav-links a {
       font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
       color: var(--muted); text-decoration: none;
@@ -123,22 +115,19 @@ const GlobalStyles = () => (
     }
     .nav-links a:hover { color: var(--white); }
     .nav-links a:hover::after { width: 100%; }
-
     .nav-cta {
       padding: 9px 22px;
       border: 1px solid var(--cyan);
       background: transparent;
       color: var(--cyan);
       font-family: 'DM Mono', monospace;
-      font-size: 11px; letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: var(--radius);
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; border-radius: var(--radius);
       transition: background .2s, color .2s;
     }
     .nav-cta:hover { background: var(--cyan); color: var(--black); }
 
-    /* ──────────────── HERO ──────────────── */
+    /* ── HERO ── */
     .hero {
       position: relative; z-index: 1;
       min-height: 100vh;
@@ -147,8 +136,6 @@ const GlobalStyles = () => (
       padding: 120px 24px 80px;
       overflow: hidden;
     }
-
-    /* Decorative grid lines */
     .hero::before {
       content: '';
       position: absolute; inset: 0;
@@ -159,15 +146,13 @@ const GlobalStyles = () => (
       mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 80%);
       pointer-events: none;
     }
-
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
       font-family: 'DM Mono', monospace;
       font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--muted);
       border: 1px solid var(--border);
-      padding: 8px 18px;
-      border-radius: 999px;
+      padding: 8px 18px; border-radius: 999px;
       margin-bottom: 40px;
       background: rgba(255,255,255,0.02);
     }
@@ -181,262 +166,151 @@ const GlobalStyles = () => (
       0%,100% { opacity: 1; transform: scale(1); }
       50%      { opacity: 0.5; transform: scale(0.7); }
     }
-
     .hero h1 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(72px, 14vw, 180px);
-      line-height: 0.9;
-      letter-spacing: 0.02em;
-      color: var(--white);
-      margin-bottom: 16px;
+      line-height: 0.9; letter-spacing: 0.02em;
+      color: var(--white); margin-bottom: 16px;
     }
     .hero-sub {
       font-family: 'Instrument Serif', serif;
       font-style: italic;
       font-size: clamp(16px, 2vw, 22px);
-      color: var(--muted);
-      max-width: 480px;
-      line-height: 1.6;
-      margin-bottom: 52px;
+      color: var(--muted); max-width: 480px; line-height: 1.6; margin-bottom: 52px;
     }
-
-    .hero-actions {
-      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
-    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 10px;
-      background: var(--cyan);
-      color: var(--black);
+      background: var(--cyan); color: var(--black);
       font-family: 'DM Mono', monospace;
       font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 15px 32px;
-      border: none; border-radius: var(--radius);
+      padding: 15px 32px; border: none; border-radius: var(--radius);
       cursor: pointer; text-decoration: none;
       transition: transform .2s, box-shadow .2s;
     }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 40px rgba(0,229,230,0.3);
-    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,229,230,0.3); }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 10px;
-      background: transparent;
-      color: var(--white);
+      background: transparent; color: var(--white);
       font-family: 'DM Mono', monospace;
       font-size: 12px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 14px 32px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      padding: 14px 32px; border: 1px solid var(--border); border-radius: var(--radius);
       cursor: pointer; text-decoration: none;
       transition: border-color .2s, color .2s;
     }
     .btn-ghost:hover { border-color: var(--white); color: var(--white); }
-
-    /* Hero stats bar */
     .hero-stats {
       position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
       display: flex; gap: 0;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      background: rgba(14,17,24,0.7);
-      backdrop-filter: blur(12px);
+      border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
+      background: rgba(14,17,24,0.7); backdrop-filter: blur(12px);
     }
-    .hero-stat {
-      padding: 18px 36px;
-      text-align: center;
-      border-right: 1px solid var(--border);
-    }
+    .hero-stat { padding: 18px 36px; text-align: center; border-right: 1px solid var(--border); }
     .hero-stat:last-child { border-right: none; }
-    .stat-num {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px; color: var(--cyan); letter-spacing: 0.04em;
-    }
-    .stat-lbl {
-      font-size: 10px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-top: 2px;
-    }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--cyan); letter-spacing: 0.04em; }
+    .stat-lbl { font-size: 10px; color: var(--muted); letter-spacing: 0.16em; text-transform: uppercase; margin-top: 2px; }
 
-    /* ──────────────── FEATURES ──────────────── */
+    /* ── FEATURES ── */
     .features {
       position: relative; z-index: 1;
-      padding: 100px 48px;
-      max-width: 1280px; margin: 0 auto;
+      padding: 100px 48px; max-width: 1280px; margin: 0 auto;
     }
-    .features-header {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      margin-bottom: 64px;
-    }
+    .features-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 64px; }
     .section-label {
       font-family: 'DM Mono', monospace;
       font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 12px;
+      color: var(--orange); margin-bottom: 12px;
     }
     .section-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(36px, 5vw, 60px);
-      line-height: 1;
-      letter-spacing: 0.02em;
+      font-size: clamp(36px, 5vw, 60px); line-height: 1; letter-spacing: 0.02em;
     }
     .features-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg); overflow: hidden;
+      border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
       background: var(--border);
     }
-    .feat-card {
-      background: var(--surface);
-      padding: 40px 32px;
-      transition: background .25s;
-      cursor: default;
-    }
+    .feat-card { background: var(--surface); padding: 40px 32px; transition: background .25s; cursor: default; }
     .feat-card:hover { background: #191D28; }
-    .feat-icon {
-      font-size: 28px; margin-bottom: 24px;
-      display: block;
-    }
-    .feat-title {
-      font-weight: 500; font-size: 15px; color: var(--white);
-      margin-bottom: 10px; letter-spacing: -0.01em;
-    }
-    .feat-desc {
-      font-size: 13px; color: var(--muted); line-height: 1.65;
-    }
+    .feat-icon { font-size: 28px; margin-bottom: 24px; display: block; }
+    .feat-title { font-weight: 500; font-size: 15px; color: var(--white); margin-bottom: 10px; letter-spacing: -0.01em; }
+    .feat-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
 
-    /* ──────────────── CATALOG ──────────────── */
-    .catalog {
-      position: relative; z-index: 1;
-      padding: 100px 48px;
-      max-width: 1280px; margin: 0 auto;
-    }
-    .catalog-header {
-      margin-bottom: 64px;
-    }
-    .catalog-sub {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic; font-size: 17px; color: var(--muted);
-      margin-top: 12px;
-    }
-
-    /* Horizontal rule with label */
-    .divider {
-      display: flex; align-items: center; gap: 20px; margin-bottom: 48px;
-    }
+    /* ── CATALOG ── */
+    .catalog { position: relative; z-index: 1; padding: 100px 48px; max-width: 1280px; margin: 0 auto; }
+    .catalog-header { margin-bottom: 64px; }
+    .catalog-sub { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 17px; color: var(--muted); margin-top: 12px; }
+    .divider { display: flex; align-items: center; gap: 20px; margin-bottom: 48px; }
     .divider-line { flex: 1; height: 1px; background: var(--border); }
-    .divider-txt {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted2);
-    }
+    .divider-txt { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted2); }
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    /* ── Product Card ── */
+    /* ── CARD ── */
     .card {
-      position: relative;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      position: relative; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius-lg);
       overflow: hidden;
       transition: border-color .3s, transform .3s, box-shadow .3s;
       cursor: default;
     }
     .card:hover {
-      border-color: var(--border-h);
-      transform: translateY(-4px);
+      border-color: var(--border-h); transform: translateY(-4px);
       box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,229,230,0.08);
     }
-
     .card-badge {
       position: absolute; top: 16px; left: 16px; z-index: 2;
       font-family: 'DM Mono', monospace;
       font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: var(--orange);
-      color: var(--black);
-      font-weight: 500;
+      padding: 5px 10px; border-radius: 999px;
+      background: var(--orange); color: var(--black); font-weight: 500;
     }
-
-    /* Card image zone */
     .card-visual {
       height: 200px;
       display: flex; align-items: center; justify-content: center;
       position: relative; overflow: hidden;
     }
-    .card-visual-glow {
-      position: absolute; inset: 0;
-      transition: opacity .4s;
-    }
+    .card-visual-glow { position: absolute; inset: 0; transition: opacity .4s; }
     .card-visual-emoji {
-      font-size: 64px;
-      position: relative; z-index: 1;
+      font-size: 64px; position: relative; z-index: 1;
       transition: transform .4s cubic-bezier(.34,1.56,.64,1);
       filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
     }
-    .card:hover .card-visual-emoji {
-      transform: scale(1.15) translateY(-6px);
+    .card:hover .card-visual-emoji { transform: scale(1.15) translateY(-6px); }
+    .card-visual-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute; inset: 0;
+      z-index: 1;
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1);
     }
-
-    /* Horizontal line accent on card */
+    .card:hover .card-visual-img { transform: scale(1.05); }
     .card-accent-line {
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--border-h), transparent);
-      opacity: 0;
-      transition: opacity .4s;
+      opacity: 0; transition: opacity .4s;
     }
     .card:hover .card-accent-line { opacity: 1; }
-
-    .card-body {
-      padding: 24px;
-    }
-    .card-tag {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--muted);
-    }
-    .card-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 26px; letter-spacing: 0.02em;
-      color: var(--white); margin: 8px 0 10px;
-      line-height: 1;
-    }
-    .card-desc {
-      font-size: 13px; color: var(--muted); line-height: 1.65;
-      margin-bottom: 16px;
-    }
+    .card-body { padding: 24px; }
+    .card-tag { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+    .card-name { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.02em; color: var(--white); margin: 8px 0 10px; line-height: 1; }
+    .card-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
     .card-material {
       display: inline-flex; align-items: center; gap: 8px;
       font-family: 'DM Mono', monospace;
       font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--cyan);
-      border: 1px solid rgba(0,229,230,0.2);
-      padding: 5px 12px; border-radius: 999px;
-      margin-bottom: 20px;
+      color: var(--cyan); border: 1px solid rgba(0,229,230,0.2);
+      padding: 5px 12px; border-radius: 999px; margin-bottom: 20px;
     }
-
-    /* Stars */
     .stars-row { display: flex; align-items: center; gap: 4px; margin-bottom: 20px; }
     .star-svg { width: 11px; height: 11px; }
     .star-rating { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-left: 6px; }
     .star-count  { font-size: 11px; color: var(--muted2); margin-left: 4px; }
-
-    .card-footer {
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    /* WA button */
+    .card-footer { padding-top: 20px; border-top: 1px solid var(--border); }
     .btn-wa {
       width: 100%;
       display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      background: rgba(37,211,102,0.1);
-      color: #25D366;
-      border: 1px solid rgba(37,211,102,0.25);
-      border-radius: var(--radius);
+      background: rgba(37,211,102,0.1); color: #25D366;
+      border: 1px solid rgba(37,211,102,0.25); border-radius: var(--radius);
       padding: 12px;
       font-family: 'DM Mono', monospace;
       font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
@@ -444,78 +318,44 @@ const GlobalStyles = () => (
       transition: background .2s, border-color .2s, box-shadow .2s;
     }
     .btn-wa:hover {
-      background: rgba(37,211,102,0.18);
-      border-color: rgba(37,211,102,0.5);
+      background: rgba(37,211,102,0.18); border-color: rgba(37,211,102,0.5);
       box-shadow: 0 4px 20px rgba(37,211,102,0.15);
     }
 
-    /* ──────────────── CTA SECTION ──────────────── */
+    /* ── CTA ── */
     .cta-section {
       position: relative; z-index: 1;
-      padding: 140px 48px;
-      text-align: center;
-      overflow: hidden;
+      padding: 140px 48px; text-align: center; overflow: hidden;
     }
     .cta-section::before {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,229,230,0.06), transparent 65%);
       pointer-events: none;
     }
-    /* Big decorative text behind */
     .cta-bg-text {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(120px, 22vw, 280px);
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.04);
-      white-space: nowrap;
-      pointer-events: none;
-      user-select: none;
+      color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+      white-space: nowrap; pointer-events: none; user-select: none;
     }
-    .cta-content {
-      position: relative; z-index: 1;
-      max-width: 600px; margin: 0 auto;
-    }
+    .cta-content { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
     .cta-emoji { font-size: 52px; display: block; margin-bottom: 24px; }
     .cta-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(40px, 6vw, 72px);
-      line-height: 0.95; letter-spacing: 0.02em;
-      margin-bottom: 20px;
+      font-size: clamp(40px, 6vw, 72px); line-height: 0.95; letter-spacing: 0.02em; margin-bottom: 20px;
     }
-    .cta-sub {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic; font-size: 18px;
-      color: var(--muted); margin-bottom: 40px; line-height: 1.6;
-    }
+    .cta-sub { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 18px; color: var(--muted); margin-bottom: 40px; line-height: 1.6; }
 
-    /* ──────────────── FOOTER ──────────────── */
-    footer {
-      position: relative; z-index: 1;
-      border-top: 1px solid var(--border);
-      padding: 48px;
-    }
-    .footer-inner {
-      max-width: 1280px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .footer-copy {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px; color: var(--muted2);
-      letter-spacing: 0.08em; margin-top: 12px;
-    }
+    /* ── FOOTER ── */
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 48px; }
+    .footer-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .footer-copy { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted2); letter-spacing: 0.08em; margin-top: 12px; }
     .footer-links { display: flex; gap: 32px; list-style: none; }
-    .footer-links a {
-      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none;
-      transition: color .2s;
-      font-family: 'DM Mono', monospace;
-    }
+    .footer-links a { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; font-family: 'DM Mono', monospace; }
     .footer-links a:hover { color: var(--cyan); }
 
-    /* ──────────────── FLOATING WA ──────────────── */
+    /* ── FAB ── */
     .wa-fab {
       position: fixed; bottom: 32px; right: 32px; z-index: 200;
       width: 52px; height: 52px; border-radius: 50%;
@@ -530,13 +370,9 @@ const GlobalStyles = () => (
       0%,100% { transform: translateY(0); }
       50%      { transform: translateY(-5px); }
     }
-    .wa-fab:hover {
-      transform: scale(1.1);
-      box-shadow: 0 12px 40px rgba(37,211,102,0.55);
-      animation: none;
-    }
+    .wa-fab:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(37,211,102,0.55); animation: none; }
 
-    /* ──────────────── RESPONSIVE ──────────────── */
+    /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
       .product-grid { grid-template-columns: repeat(2, 1fr); }
       .features-grid { grid-template-columns: repeat(2, 1fr); }
@@ -597,11 +433,46 @@ const Star = ({ filled }) => (
 
 /* ─── DATA ─── */
 const PRODUCTOS = [
-id:1, 
-  nombre:"Soporte Móviles/Tablets", material:"PLA Marmolado",img:"https://fv5-7.files.fm/thumb_show.php?i=25hg2xastt&view&v=1&PHPSESSID=cbe48d4bfefc5b5725e6497834914248c83edd9a", badge:null, color:["#22D3EE","#5B8CFF"],desc:"Soporte de escritorio para móviles y tablets impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica."
-},  { id:2, nombre:"Velas Aromáticas",         material:"Cera de Soja",     emoji:"🕯️", badge:null,             color:["#F59E0B","#F97316"], desc:"Velas artesanales con cera de soja natural. Aromas relajantes para el hogar, en múltiples tamaños y fragancias." },
-  { id:4, nombre:"Llaveros Personalizados",  material:"PLA Multicolor",   emoji:"🔑", badge:"Personalizable", color:["#A855F7","#EC4899"], desc:"Llaveros con tu nombre, iniciales, logo o diseño y con opcion de añadir nfc. Impresos en PLA de alta calidad con acabado premium." },
-  { id:5, nombre:"Figuras Artesanales",      material:"Resina Premium",   emoji:"🗿", badge:"Ed. Limitada",  color:["#F97316","#EAB308"], desc:"Figuras artesanales en resina de alta resolución.regalos únicos." },
+  {
+    id: 1,
+    nombre: "Soporte Móviles/Tablets",
+    material: "PLA Marmolado",
+    img: "/soporte.png",   // ← pon la imagen en public/soporte.png
+    badge: null,
+    rating: 4.9, reviews: 127,
+    color: ["#22D3EE","#5B8CFF"],
+    desc: "Soporte de escritorio para móviles y tablets impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica.",
+  },
+  {
+    id: 2,
+    nombre: "Velas Aromáticas",
+    material: "Cera de Soja",
+    emoji: "🕯️",
+    badge: null,
+    rating: 4.7, reviews: 88,
+    color: ["#F59E0B","#F97316"],
+    desc: "Velas artesanales con cera de soja natural. Aromas relajantes para el hogar, en múltiples tamaños y fragancias.",
+  },
+  {
+    id: 4,
+    nombre: "Llaveros Personalizados",
+    material: "PLA Multicolor",
+    emoji: "🔑",
+    badge: "Personalizable",
+    rating: 4.8, reviews: 214,
+    color: ["#A855F7","#EC4899"],
+    desc: "Llaveros con tu nombre, iniciales, logo o diseño y con opción de añadir NFC. Impresos en PLA de alta calidad con acabado premium.",
+  },
+  {
+    id: 5,
+    nombre: "Figuras Artesanales",
+    material: "Resina Premium",
+    emoji: "🗿",
+    badge: "Ed. Limitada",
+    rating: 4.9, reviews: 76,
+    color: ["#F97316","#EAB308"],
+    desc: "Figuras artesanales en resina de alta resolución. Regalos únicos para coleccionistas.",
+  },
 ];
 
 const TELEFONO = "34614819874";
@@ -625,8 +496,6 @@ export default function Forma3D() {
   return (
     <>
       <GlobalStyles />
-
-      {/* Grain + mesh */}
       <div id="grain" aria-hidden />
       <div id="bg-mesh" aria-hidden />
 
@@ -651,24 +520,19 @@ export default function Forma3D() {
           <span className="eyebrow-dot" aria-hidden />
           Impresión 3D artesanal · España
         </div>
-
         <h1 className="fu fu-2">
           <span className="shimmer">FORMA</span><br />
           <span style={{ color:"var(--white)" }}>3D</span>
         </h1>
-
         <p className="hero-sub fu fu-3">
           Convierte tus ideas en objetos reales.<br/>Calidad premium, capa a capa.
         </p>
-
         <div className="hero-actions fu fu-4">
           <a href="#catalogo" className="btn-primary">Ver catálogo →</a>
           <button className="btn-ghost" onClick={() => whatsapp("un diseño personalizado")}>
             Pedir personalizado
           </button>
         </div>
-
-        {/* Stats */}
         <div className="hero-stats fu fu-4" role="list" aria-label="Estadísticas">
           {[
             { num:"500+", lbl:"Proyectos" },
@@ -716,13 +580,11 @@ export default function Forma3D() {
           <h2 id="cat-h" className="section-title">Nuestros <span className="shimmer">Productos</span></h2>
           <p className="catalog-sub">Artículos impresos en 3D listos para enviar o personalizar</p>
         </div>
-
         <div className="divider" aria-hidden>
           <div className="divider-line"/>
           <span className="divider-txt">{PRODUCTOS.length} productos disponibles</span>
           <div className="divider-line"/>
         </div>
-
         <div className="product-grid">
           {PRODUCTOS.map((item, i) => (
             <article
@@ -746,34 +608,33 @@ export default function Forma3D() {
                   }}
                   aria-hidden
                 />
-                <span
-                  className="card-visual-emoji"
-                  role="img"
-                  aria-label={item.nombre}
-                >
-                  {item.emoji}
-                </span>
+                {item.img ? (
+                  <img
+                    className="card-visual-img"
+                    src={item.img}
+                    alt={item.nombre}
+                  />
+                ) : (
+                  <span className="card-visual-emoji" role="img" aria-label={item.nombre}>
+                    {item.emoji}
+                  </span>
+                )}
               </div>
 
-              {/* Cyan accent line on hover */}
               <div className="card-accent-line" aria-hidden />
 
               <div className="card-body">
                 <div className="card-tag" aria-hidden>Impresión 3D</div>
                 <h3 className="card-name" itemProp="name">{item.nombre}</h3>
                 <p className="card-desc" itemProp="description">{item.desc}</p>
-
                 <div className="card-material" aria-label={`Material: ${item.material}`}>
                   {item.material}
                 </div>
-
-                {/* Stars */}
                 <div className="stars-row" role="img" aria-label={`Valoración: ${item.rating} de 5`}>
                   {[1,2,3,4,5].map(s => <Star key={s} filled={s <= Math.round(item.rating)} />)}
                   <span className="star-rating">{item.rating}</span>
                   <span className="star-count">({item.reviews} reseñas)</span>
                 </div>
-
                 <div className="card-footer">
                   <button
                     className="btn-wa"
@@ -802,11 +663,7 @@ export default function Forma3D() {
             Envíanos tu archivo STL o cuéntanos tu idea.<br/>
             Presupuesto gratuito en menos de 24 horas.
           </p>
-          <button
-            className="btn-primary"
-            style={{ margin:"0 auto" }}
-            onClick={() => whatsapp("un artículo personalizado")}
-          >
+          <button className="btn-primary" style={{ margin:"0 auto" }} onClick={() => whatsapp("un artículo personalizado")}>
             <WAIcon size={16} />
             Pedir presupuesto
           </button>
@@ -833,7 +690,7 @@ export default function Forma3D() {
         </div>
       </footer>
 
-      {/* ── FLOATING WA ── */}
+      {/* ── FAB ── */}
       <button
         className="wa-fab"
         onClick={() => window.open(`https://wa.me/${TELEFONO}`, "_blank", "noopener")}
