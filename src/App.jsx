@@ -457,7 +457,7 @@ const PRODUCTOS = [
     id: 4,
     nombre: "Llaveros Personalizados",
     material: "PLA Multicolor",
-    emoji: "🔑",
+    img: "/clauer.png",
     badge: "Personalizable",
     rating: 4.8, reviews: 214,
     color: ["#A855F7","#EC4899"],
@@ -673,7 +673,7 @@ export default function Forma3D() {
       {/* ── FOOTER ── */}
       <footer id="contacto" itemScope itemType="https://schema.org/LocalBusiness">
         <meta itemProp="name" content="Forma3D" />
-        <meta itemProp="email" content="hola@forma3d.es" />
+        <meta itemProp="email" content="hola@forma3d.shop" />
         <div className="footer-inner">
           <div>
             <Logo height={34} />
