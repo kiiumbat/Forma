@@ -467,7 +467,7 @@ const PRODUCTOS = [
     id: 5,
     nombre: "Figuras Artesanales",
     material: "Resina Premium",
-    emoji: "🗿",
+    emoji: "figuras.png",
     badge: "Ed. Limitada",
     rating: 4.9, reviews: 76,
     color: ["#F97316","#EAB308"],
