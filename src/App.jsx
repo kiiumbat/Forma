@@ -1,6 +1,3 @@
-Forma3d · JSX
-Copiar
-
 import React, { useState, useEffect, useCallback } from "react";
 
 /* ─── GLOBAL STYLES ─── */
