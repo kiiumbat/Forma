@@ -311,10 +311,6 @@ const GlobalStyles = () => (
       color: var(--cyan); border: 1px solid rgba(0,229,230,0.2);
       padding: 5px 12px; border-radius: 999px; margin-bottom: 20px;
     }
-    .stars-row { display: flex; align-items: center; gap: 4px; margin-bottom: 20px; }
-    .star-svg { width: 11px; height: 11px; }
-    .star-rating { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-left: 6px; }
-    .star-count  { font-size: 11px; color: var(--muted2); margin-left: 4px; }
     .card-footer { padding-top: 20px; border-top: 1px solid var(--border); }
     .btn-wa {
       width: 100%;
@@ -467,7 +463,6 @@ const GlobalStyles = () => (
       color: var(--cyan); border: 1px solid rgba(0,229,230,0.2);
       padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
     }
-    .modal-stars { display: flex; align-items: center; gap: 4px; margin-bottom: 28px; }
     .modal-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
     .modal-actions { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
     .btn-wa-lg {
@@ -617,13 +612,6 @@ const WAIcon = ({ size = 18 }) => (
   </svg>
 );
 
-/* ─── STAR ─── */
-const Star = ({ filled }) => (
-  <svg className="star-svg" viewBox="0 0 12 12" fill={filled ? "#F59E0B" : "#2A3040"} aria-hidden>
-    <path d="M6 1l1.39 2.81L11 4.24l-2.5 2.44.59 3.44L6 8.5l-3.09 1.62.59-3.44L1 4.24l3.61-.43z"/>
-  </svg>
-);
-
 /* ─── DATA ─── */
 const PRODUCTOS = [
   {
@@ -636,7 +624,6 @@ const PRODUCTOS = [
     desc: "Soporte de escritorio para móviles y tablets impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica.",
     descFull: "Soporte de escritorio de alta calidad para móviles y tablets, fabricado en PLA marmolado de primera calidad. Diseñado ergonómicamente para mantener tu dispositivo en el ángulo perfecto para visualización y videollamadas. Compatible con carga inalámbrica, sin necesidad de retirar el dispositivo. Base amplia y antideslizante para máxima estabilidad. Disponible en varios colores de filamento marmolado.",
     imgs: ["/soporte.png", "/soporte.png", "/soporte.png"],
-    rating: 4.9, reviews: 124,
     specs: [
       { label: "Material", value: "PLA Marmolado" },
       { label: "Colores", value: "Blanco, Negro, Gris" },
@@ -655,7 +642,6 @@ const PRODUCTOS = [
     descFull: "Velas artesanales elaboradas con cera de soja 100% natural y pabilos de algodón orgánico. Sin parafina ni aditivos sintéticos. Fragancias disponibles: lavanda, vainilla, eucalipto, bergamota y canela. Contenedores de vidrio reciclado o cerámica impresa en 3D. Tiempo de combustión de hasta 50 horas según el tamaño. Perfectas como regalo o para crear ambientes únicos en el hogar.",
     imgs: [],
     emoji2: "🕯️",
-    rating: 4.8, reviews: 89,
     specs: [
       { label: "Material", value: "Cera de Soja" },
       { label: "Fragancias", value: "5 opciones" },
@@ -673,7 +659,6 @@ const PRODUCTOS = [
     desc: "Llaveros con tu nombre, iniciales, logo o diseño y con opción de añadir NFC. Impresos en PLA de alta calidad con acabado premium.",
     descFull: "Llaveros completamente personalizables impresos en PLA de alta resolución. Puedes incluir tu nombre, iniciales, logo corporativo o cualquier diseño que tengas en mente. Opción de integrar chip NFC para compartir tu contacto, enlace web o cualquier información digital con un simple toque. Acabado liso o texturado según preferencia. Resistentes y ligeros, perfectos para uso diario o como detalle corporativo.",
     imgs: ["/clauer.png", "/clauer.png", "/clauer.png"],
-    rating: 5.0, reviews: 203,
     specs: [
       { label: "Material", value: "PLA Multicolor" },
       { label: "Opción NFC", value: "Disponible" },
@@ -691,7 +676,6 @@ const PRODUCTOS = [
     desc: "Figuras artesanales en resina de alta resolución. Regalos únicos para coleccionistas.",
     descFull: "Figuras artesanales fabricadas en resina fotopolimérica de alta resolución con acabado a mano. Cada pieza es única y pasa por un proceso de pintura artesanal multicapa. Disponibles en diferentes tamaños, desde miniaturas de 5cm hasta figuras de 20cm. Ideales para coleccionistas, decoración del hogar o como regalo especial. Edición limitada — pocas unidades disponibles. También realizamos encargos de figuras personalizadas.",
     imgs: ["/figuras.png", "/figuras.png", "/figuras.png"],
-    rating: 4.9, reviews: 47,
     specs: [
       { label: "Material", value: "Resina Premium" },
       { label: "Acabado", value: "Pintado a mano" },
@@ -709,14 +693,12 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
   const hasImgs = item.imgs && item.imgs.length > 0;
   const totalImgs = hasImgs ? item.imgs.length : 0;
 
-  // Close on Escape
   useEffect(() => {
     const fn = (e) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", fn);
     return () => window.removeEventListener("keydown", fn);
   }, [onClose]);
 
-  // Prevent body scroll
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = ""; };
@@ -734,13 +716,10 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
       aria-label={`Detalle: ${item.nombre}`}
     >
       <div className="modal">
-        {/* ── CLOSE ── */}
         <button className="modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
 
-        {/* ── LEFT: GALLERY ── */}
         <div className="modal-gallery">
           <div className="modal-main-img">
-            {/* glow */}
             <div className="modal-main-glow" style={{
               background: `radial-gradient(ellipse at 40% 50%, ${item.color[0]}33, transparent 60%),
                            radial-gradient(ellipse at 70% 60%, ${item.color[1]}22, transparent 55%)`
@@ -754,7 +733,6 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
               </span>
             )}
 
-            {/* nav arrows — only if multiple images */}
             {totalImgs > 1 && (
               <>
                 <button className="modal-img-nav prev" onClick={prev} aria-label="Imagen anterior">‹</button>
@@ -763,7 +741,6 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
             )}
           </div>
 
-          {/* thumbnails */}
           {totalImgs > 1 && (
             <div className="modal-thumbs">
               {item.imgs.map((src, i) => (
@@ -780,7 +757,6 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
           )}
         </div>
 
-        {/* ── RIGHT: INFO ── */}
         <div className="modal-info">
           {item.badge && <div className="modal-badge">{item.badge}</div>}
           <div className="modal-tag">Impresión 3D · Forma3D</div>
@@ -796,17 +772,10 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
             {item.material}
           </div>
 
-          <div className="modal-stars" role="img" aria-label={`Valoración ${item.rating} de 5`}>
-            {[1,2,3,4,5].map(s => <Star key={s} filled={s <= Math.round(item.rating)} />)}
-            <span className="star-rating" style={{marginLeft:8}}>{item.rating}</span>
-            <span className="star-count" style={{marginLeft:4}}>({item.reviews} reseñas)</span>
-          </div>
-
           <p className="modal-desc-full">{item.descFull}</p>
 
           <div className="modal-divider" aria-hidden />
 
-          {/* Specs */}
           <div className="modal-specs">
             {item.specs.map(s => (
               <div key={s.label} className="modal-spec">
@@ -816,7 +785,6 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
             ))}
           </div>
 
-          {/* Actions */}
           <div className="modal-actions">
             <button
               className="btn-wa-lg"
@@ -866,7 +834,6 @@ export default function Forma3D() {
       <div id="grain" aria-hidden />
       <div id="bg-mesh" aria-hidden />
 
-      {/* ── NAVBAR ── */}
       <header>
         <nav className={`nav${stuck ? " stuck" : ""}`} aria-label="Navegación principal">
           <a href="#" aria-label="Forma3D inicio"><Logo /></a>
@@ -881,7 +848,6 @@ export default function Forma3D() {
         </nav>
       </header>
 
-      {/* ── HERO ── */}
       <section className="hero" aria-label="Portada">
         <div className="hero-eyebrow fu fu-1">
           <span className="eyebrow-dot" aria-hidden />
@@ -915,7 +881,6 @@ export default function Forma3D() {
         </div>
       </section>
 
-      {/* ── FEATURES ── */}
       <section className="features" aria-labelledby="feat-h">
         <div className="features-header">
           <div>
@@ -940,7 +905,6 @@ export default function Forma3D() {
         </div>
       </section>
 
-      {/* ── CATALOG ── */}
       <main id="catalogo" className="catalog" aria-labelledby="cat-h">
         <div className="catalog-header">
           <div className="section-label">Catálogo</div>
@@ -969,7 +933,6 @@ export default function Forma3D() {
             >
               {item.badge && <div className="card-badge">{item.badge}</div>}
 
-              {/* Zoom hint */}
               <div className="card-zoom-hint" aria-hidden>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -977,7 +940,6 @@ export default function Forma3D() {
                 </svg>
               </div>
 
-              {/* Visual zone */}
               <div className="card-visual">
                 <div
                   className="card-visual-glow"
@@ -1010,11 +972,6 @@ export default function Forma3D() {
                 <div className="card-material" aria-label={`Material: ${item.material}`}>
                   {item.material}
                 </div>
-                <div className="stars-row" role="img" aria-label={`Valoración: ${item.rating} de 5`}>
-                  {[1,2,3,4,5].map(s => <Star key={s} filled={s <= Math.round(item.rating)} />)}
-                  <span className="star-rating">{item.rating}</span>
-                  <span className="star-count">({item.reviews} reseñas)</span>
-                </div>
                 <div className="card-footer">
                   <button
                     className="btn-wa"
@@ -1031,7 +988,6 @@ export default function Forma3D() {
         </div>
       </main>
 
-      {/* ── CTA ── */}
       <section id="personalizado" className="cta-section" aria-labelledby="cta-h">
         <div className="cta-bg-text" aria-hidden>STL</div>
         <div className="cta-content">
@@ -1050,7 +1006,6 @@ export default function Forma3D() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
       <footer id="contacto" itemScope itemType="https://schema.org/LocalBusiness">
         <meta itemProp="name" content="Forma3D" />
         <meta itemProp="email" content="hola@forma3d.shop" />
@@ -1070,7 +1025,6 @@ export default function Forma3D() {
         </div>
       </footer>
 
-      {/* ── FAB ── */}
       <button
         className="wa-fab"
         onClick={() => window.open(`https://wa.me/${TELEFONO}`, "_blank", "noopener")}
@@ -1081,7 +1035,6 @@ export default function Forma3D() {
         <WAIcon size={22} />
       </button>
 
-      {/* ── MODAL ── */}
       {modalItem && (
         <ProductModal
           item={modalItem}
