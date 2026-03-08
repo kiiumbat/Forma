@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+Forma3d · JSX
+Copiar
+
+import React, { useState, useEffect, useCallback } from "react";
 
 /* ─── GLOBAL STYLES ─── */
 const GlobalStyles = () => (
@@ -251,7 +254,7 @@ const GlobalStyles = () => (
       border: 1px solid var(--border); border-radius: var(--radius-lg);
       overflow: hidden;
       transition: border-color .3s, transform .3s, box-shadow .3s;
-      cursor: default;
+      cursor: pointer;
     }
     .card:hover {
       border-color: var(--border-h); transform: translateY(-4px);
@@ -264,6 +267,16 @@ const GlobalStyles = () => (
       padding: 5px 10px; border-radius: 999px;
       background: var(--orange); color: var(--black); font-weight: 500;
     }
+    .card-zoom-hint {
+      position: absolute; top: 16px; right: 16px; z-index: 2;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .3s;
+      color: var(--muted);
+    }
+    .card:hover .card-zoom-hint { opacity: 1; }
     .card-visual {
       height: 200px;
       display: flex; align-items: center; justify-content: center;
@@ -322,6 +335,182 @@ const GlobalStyles = () => (
       box-shadow: 0 4px 20px rgba(37,211,102,0.15);
     }
 
+    /* ── MODAL OVERLAY ── */
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes overlayIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(8,10,15,0.85);
+      backdrop-filter: blur(16px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      animation: overlayIn .25s ease forwards;
+    }
+    .modal {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid rgba(0,229,230,0.15);
+      border-radius: 20px;
+      width: 100%; max-width: 900px; max-height: 90vh;
+      overflow: hidden;
+      display: grid; grid-template-columns: 1fr 1fr;
+      animation: modalIn .3s cubic-bezier(.22,1,.36,1) forwards;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,229,230,0.06);
+    }
+
+    /* ── MODAL LEFT (gallery) ── */
+    .modal-gallery {
+      position: relative; background: #0D1017;
+      display: flex; flex-direction: column;
+      min-height: 480px;
+    }
+    .modal-main-img {
+      flex: 1; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 340px;
+    }
+    .modal-main-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: opacity .3s;
+    }
+    .modal-main-emoji {
+      font-size: 100px;
+      filter: drop-shadow(0 12px 32px rgba(0,0,0,0.5));
+    }
+    .modal-main-glow {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .modal-thumbs {
+      display: flex; gap: 8px; padding: 12px;
+      border-top: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    .modal-thumbs::-webkit-scrollbar { height: 3px; }
+    .modal-thumb {
+      width: 60px; height: 60px; flex-shrink: 0;
+      border-radius: 8px; overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer; transition: border-color .2s;
+      background: #1A1E2A;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+    .modal-thumb.active { border-color: var(--cyan); }
+    .modal-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-img-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(8,10,15,0.7); border: 1px solid var(--border);
+      color: var(--white); width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background .2s, border-color .2s;
+      z-index: 2; font-size: 16px;
+    }
+    .modal-img-nav:hover { background: rgba(0,229,230,0.15); border-color: var(--cyan); }
+    .modal-img-nav.prev { left: 12px; }
+    .modal-img-nav.next { right: 12px; }
+
+    /* ── MODAL RIGHT (info) ── */
+    .modal-info {
+      padding: 36px 32px;
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+    .modal-info::-webkit-scrollbar { width: 3px; }
+    .modal-badge {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--orange); color: var(--black);
+      padding: 4px 10px; border-radius: 999px;
+      margin-bottom: 16px; font-weight: 500;
+      align-self: flex-start;
+    }
+    .modal-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 8px;
+    }
+    .modal-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 46px; letter-spacing: 0.02em; line-height: 0.95;
+      color: var(--white); margin-bottom: 16px;
+    }
+    .modal-desc-full {
+      font-size: 14px; color: var(--muted); line-height: 1.75;
+      margin-bottom: 24px;
+    }
+    .modal-specs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin-bottom: 28px;
+    }
+    .modal-spec {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px;
+    }
+    .modal-spec-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted2); margin-bottom: 4px;
+    }
+    .modal-spec-value {
+      font-size: 13px; color: var(--white); font-weight: 400;
+    }
+    .modal-material-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--cyan); border: 1px solid rgba(0,229,230,0.2);
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
+    }
+    .modal-stars { display: flex; align-items: center; gap: 4px; margin-bottom: 28px; }
+    .modal-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+    .modal-actions { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+    .btn-wa-lg {
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      background: rgba(37,211,102,0.12); color: #25D366;
+      border: 1px solid rgba(37,211,102,0.3); border-radius: var(--radius);
+      padding: 14px 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, box-shadow .2s;
+    }
+    .btn-wa-lg:hover {
+      background: rgba(37,211,102,0.2); border-color: rgba(37,211,102,0.6);
+      box-shadow: 0 6px 28px rgba(37,211,102,0.2);
+    }
+    .btn-custom {
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 13px 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-custom:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* ── CLOSE BUTTON ── */
+    .modal-close {
+      position: absolute; top: 16px; right: 16px; z-index: 10;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(8,10,15,0.7); border: 1px solid var(--border);
+      color: var(--muted); font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; backdrop-filter: blur(8px);
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .modal-close:hover { background: rgba(0,229,230,0.1); color: var(--cyan); border-color: var(--cyan); }
+
     /* ── CTA ── */
     .cta-section {
       position: relative; z-index: 1;
@@ -378,6 +567,13 @@ const GlobalStyles = () => (
       .features-grid { grid-template-columns: repeat(2, 1fr); }
       .nav { padding: 0 28px; }
       .catalog, .features { padding: 80px 28px; }
+    }
+    @media (max-width: 700px) {
+      .modal { grid-template-columns: 1fr; max-height: 95vh; }
+      .modal-gallery { min-height: 260px; }
+      .modal-info { padding: 24px 20px; }
+      .modal-name { font-size: 36px; }
+      .modal-specs { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 640px) {
       .product-grid { grid-template-columns: 1fr; }
@@ -437,10 +633,19 @@ const PRODUCTOS = [
     id: 1,
     nombre: "Soporte Móviles/Tablets",
     material: "PLA Marmolado",
-    img: "/soporte.png",   // ← pon la imagen en public/soporte.png
+    img: "/soporte.png",
     badge: null,
     color: ["#22D3EE","#5B8CFF"],
     desc: "Soporte de escritorio para móviles y tablets impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica.",
+    descFull: "Soporte de escritorio de alta calidad para móviles y tablets, fabricado en PLA marmolado de primera calidad. Diseñado ergonómicamente para mantener tu dispositivo en el ángulo perfecto para visualización y videollamadas. Compatible con carga inalámbrica, sin necesidad de retirar el dispositivo. Base amplia y antideslizante para máxima estabilidad. Disponible en varios colores de filamento marmolado.",
+    imgs: ["/soporte.png", "/soporte.png", "/soporte.png"],
+    rating: 4.9, reviews: 124,
+    specs: [
+      { label: "Material", value: "PLA Marmolado" },
+      { label: "Colores", value: "Blanco, Negro, Gris" },
+      { label: "Compatibilidad", value: "Móvil y Tablet" },
+      { label: "Entrega", value: "48 horas" },
+    ],
   },
   {
     id: 2,
@@ -450,6 +655,16 @@ const PRODUCTOS = [
     badge: null,
     color: ["#F59E0B","#F97316"],
     desc: "Velas artesanales con cera de soja natural. Aromas relajantes para el hogar, en múltiples tamaños y fragancias.",
+    descFull: "Velas artesanales elaboradas con cera de soja 100% natural y pabilos de algodón orgánico. Sin parafina ni aditivos sintéticos. Fragancias disponibles: lavanda, vainilla, eucalipto, bergamota y canela. Contenedores de vidrio reciclado o cerámica impresa en 3D. Tiempo de combustión de hasta 50 horas según el tamaño. Perfectas como regalo o para crear ambientes únicos en el hogar.",
+    imgs: [],
+    emoji2: "🕯️",
+    rating: 4.8, reviews: 89,
+    specs: [
+      { label: "Material", value: "Cera de Soja" },
+      { label: "Fragancias", value: "5 opciones" },
+      { label: "Duración", value: "Hasta 50h" },
+      { label: "Entrega", value: "48 horas" },
+    ],
   },
   {
     id: 4,
@@ -459,24 +674,180 @@ const PRODUCTOS = [
     badge: "Personalizable",
     color: ["#A855F7","#EC4899"],
     desc: "Llaveros con tu nombre, iniciales, logo o diseño y con opción de añadir NFC. Impresos en PLA de alta calidad con acabado premium.",
+    descFull: "Llaveros completamente personalizables impresos en PLA de alta resolución. Puedes incluir tu nombre, iniciales, logo corporativo o cualquier diseño que tengas en mente. Opción de integrar chip NFC para compartir tu contacto, enlace web o cualquier información digital con un simple toque. Acabado liso o texturado según preferencia. Resistentes y ligeros, perfectos para uso diario o como detalle corporativo.",
+    imgs: ["/clauer.png", "/clauer.png", "/clauer.png"],
+    rating: 5.0, reviews: 203,
+    specs: [
+      { label: "Material", value: "PLA Multicolor" },
+      { label: "Opción NFC", value: "Disponible" },
+      { label: "Diseño", value: "100% Custom" },
+      { label: "Entrega", value: "48–72h" },
+    ],
   },
   {
     id: 5,
     nombre: "Figuras Artesanales",
     material: "Resina Premium",
-    img: "figuras.png",
+    img: "/figuras.png",
     badge: "Ed. Limitada",
     color: ["#F97316","#EAB308"],
     desc: "Figuras artesanales en resina de alta resolución. Regalos únicos para coleccionistas.",
+    descFull: "Figuras artesanales fabricadas en resina fotopolimérica de alta resolución con acabado a mano. Cada pieza es única y pasa por un proceso de pintura artesanal multicapa. Disponibles en diferentes tamaños, desde miniaturas de 5cm hasta figuras de 20cm. Ideales para coleccionistas, decoración del hogar o como regalo especial. Edición limitada — pocas unidades disponibles. También realizamos encargos de figuras personalizadas.",
+    imgs: ["/figuras.png", "/figuras.png", "/figuras.png"],
+    rating: 4.9, reviews: 47,
+    specs: [
+      { label: "Material", value: "Resina Premium" },
+      { label: "Acabado", value: "Pintado a mano" },
+      { label: "Tamaños", value: "5cm – 20cm" },
+      { label: "Stock", value: "Ed. Limitada" },
+    ],
   },
 ];
 
 const TELEFONO = "34614819874";
 
+/* ─── PRODUCT MODAL ─── */
+const ProductModal = ({ item, onClose, onWhatsapp }) => {
+  const [activeImg, setActiveImg] = useState(0);
+  const hasImgs = item.imgs && item.imgs.length > 0;
+  const totalImgs = hasImgs ? item.imgs.length : 0;
+
+  // Close on Escape
+  useEffect(() => {
+    const fn = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", fn);
+    return () => window.removeEventListener("keydown", fn);
+  }, [onClose]);
+
+  // Prevent body scroll
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const prev = () => setActiveImg(i => (i - 1 + totalImgs) % totalImgs);
+  const next = () => setActiveImg(i => (i + 1) % totalImgs);
+
+  return (
+    <div
+      className="modal-overlay"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Detalle: ${item.nombre}`}
+    >
+      <div className="modal">
+        {/* ── CLOSE ── */}
+        <button className="modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
+
+        {/* ── LEFT: GALLERY ── */}
+        <div className="modal-gallery">
+          <div className="modal-main-img">
+            {/* glow */}
+            <div className="modal-main-glow" style={{
+              background: `radial-gradient(ellipse at 40% 50%, ${item.color[0]}33, transparent 60%),
+                           radial-gradient(ellipse at 70% 60%, ${item.color[1]}22, transparent 55%)`
+            }} aria-hidden />
+
+            {hasImgs ? (
+              <img src={item.imgs[activeImg]} alt={`${item.nombre} foto ${activeImg + 1}`} />
+            ) : (
+              <span className="modal-main-emoji" role="img" aria-label={item.nombre}>
+                {item.emoji}
+              </span>
+            )}
+
+            {/* nav arrows — only if multiple images */}
+            {totalImgs > 1 && (
+              <>
+                <button className="modal-img-nav prev" onClick={prev} aria-label="Imagen anterior">‹</button>
+                <button className="modal-img-nav next" onClick={next} aria-label="Imagen siguiente">›</button>
+              </>
+            )}
+          </div>
+
+          {/* thumbnails */}
+          {totalImgs > 1 && (
+            <div className="modal-thumbs">
+              {item.imgs.map((src, i) => (
+                <button
+                  key={i}
+                  className={`modal-thumb${activeImg === i ? " active" : ""}`}
+                  onClick={() => setActiveImg(i)}
+                  aria-label={`Ver foto ${i + 1}`}
+                >
+                  <img src={src} alt="" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* ── RIGHT: INFO ── */}
+        <div className="modal-info">
+          {item.badge && <div className="modal-badge">{item.badge}</div>}
+          <div className="modal-tag">Impresión 3D · Forma3D</div>
+          <h2 className="modal-name">{item.nombre}</h2>
+
+          <div className="modal-material-pill">
+            <span style={{
+              width: 7, height: 7, borderRadius: "50%",
+              background: item.color[0],
+              boxShadow: `0 0 8px ${item.color[0]}`,
+              display:"inline-block"
+            }} aria-hidden />
+            {item.material}
+          </div>
+
+          <div className="modal-stars" role="img" aria-label={`Valoración ${item.rating} de 5`}>
+            {[1,2,3,4,5].map(s => <Star key={s} filled={s <= Math.round(item.rating)} />)}
+            <span className="star-rating" style={{marginLeft:8}}>{item.rating}</span>
+            <span className="star-count" style={{marginLeft:4}}>({item.reviews} reseñas)</span>
+          </div>
+
+          <p className="modal-desc-full">{item.descFull}</p>
+
+          <div className="modal-divider" aria-hidden />
+
+          {/* Specs */}
+          <div className="modal-specs">
+            {item.specs.map(s => (
+              <div key={s.label} className="modal-spec">
+                <div className="modal-spec-label">{s.label}</div>
+                <div className="modal-spec-value">{s.value}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Actions */}
+          <div className="modal-actions">
+            <button
+              className="btn-wa-lg"
+              onClick={() => onWhatsapp(item.nombre)}
+              aria-label={`Pedir ${item.nombre} por WhatsApp`}
+            >
+              <WAIcon size={18} />
+              Pedir por WhatsApp
+            </button>
+            <button
+              className="btn-custom"
+              onClick={() => onWhatsapp(`un ${item.nombre} personalizado`)}
+              aria-label={`Pedir versión personalizada de ${item.nombre}`}
+            >
+              ✏️ Quiero personalizarlo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ─── MAIN ─── */
 export default function Forma3D() {
   const [stuck, setStuck] = useState(false);
   const [hovered, setHovered] = useState(null);
+  const [modalItem, setModalItem] = useState(null);
 
   useEffect(() => {
     const fn = () => setStuck(window.scrollY > 50);
@@ -484,10 +855,13 @@ export default function Forma3D() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  const whatsapp = (producto) => {
+  const whatsapp = useCallback((producto) => {
     const msg = encodeURIComponent(`¡Hola! Me interesa: ${producto}. ¿Podéis darme más info?`);
     window.open(`https://wa.me/${TELEFONO}?text=${msg}`, "_blank", "noopener");
-  };
+  }, []);
+
+  const openModal = (item) => setModalItem(item);
+  const closeModal = () => setModalItem(null);
 
   return (
     <>
@@ -589,9 +963,22 @@ export default function Forma3D() {
               itemScope itemType="https://schema.org/Product"
               onMouseEnter={() => setHovered(item.id)}
               onMouseLeave={() => setHovered(null)}
+              onClick={() => openModal(item)}
               style={{ animation:`fadeUp .6s ease ${i * 0.1}s both` }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openModal(item); }}
+              aria-label={`Ver detalles de ${item.nombre}`}
             >
               {item.badge && <div className="card-badge">{item.badge}</div>}
+
+              {/* Zoom hint */}
+              <div className="card-zoom-hint" aria-hidden>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </div>
 
               {/* Visual zone */}
               <div className="card-visual">
@@ -634,7 +1021,7 @@ export default function Forma3D() {
                 <div className="card-footer">
                   <button
                     className="btn-wa"
-                    onClick={() => whatsapp(item.nombre)}
+                    onClick={(e) => { e.stopPropagation(); whatsapp(item.nombre); }}
                     aria-label={`Pedir ${item.nombre} por WhatsApp`}
                   >
                     <WAIcon size={16} />
@@ -696,6 +1083,15 @@ export default function Forma3D() {
       >
         <WAIcon size={22} />
       </button>
+
+      {/* ── MODAL ── */}
+      {modalItem && (
+        <ProductModal
+          item={modalItem}
+          onClose={closeModal}
+          onWhatsapp={whatsapp}
+        />
+      )}
     </>
   );
 }
