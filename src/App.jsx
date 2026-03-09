@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 /* ─── GLOBAL STYLES ─── */
 const GlobalStyles = () => (
