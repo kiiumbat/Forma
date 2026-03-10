@@ -624,7 +624,7 @@ const PRODUCTOS = [
     color: ["#22D3EE","#5B8CFF"],
     desc: "Soporte de escritorio para móviles y tablets impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica.",
     descFull: "Soporte de escritorio de alta calidad para móviles y tablets, fabricado en PLA marmolado de primera calidad. Diseñado ergonómicamente para mantener tu dispositivo en el ángulo perfecto para visualización y videollamadas. Compatible con carga inalámbrica, sin necesidad de retirar el dispositivo. Base amplia y antideslizante para máxima estabilidad. Disponible en varios colores de filamento marmolado.",
-    imgs: ["/soporte.png", "/public/flash.jpeg", "/public/kaiju.webp"],
+    imgs: ["/soporte.png", "/soporte.png", "/soporte.png"],
     specs: [
       { label: "Material", value: "PLA Marmolado" },
       { label: "Colores", value: "Blanco, Negro, Gris" },
@@ -676,7 +676,7 @@ const PRODUCTOS = [
     color: ["#F97316","#EAB308"],
     desc: "Figuras artesanales en resina de alta resolución. Regalos únicos para coleccionistas.",
     descFull: "Figuras artesanales fabricadas en resina fotopolimérica de alta resolución con acabado a mano. Cada pieza es única y pasa por un proceso de pintura artesanal multicapa. Disponibles en diferentes tamaños, desde miniaturas de 5cm hasta figuras de 20cm. Ideales para coleccionistas, decoración del hogar o como regalo especial. Edición limitada — pocas unidades disponibles. También realizamos encargos de figuras personalizadas.",
-    imgs: ["/figuras.png", "/figuras.png", "/figuras.png"],
+    imgs: ["/figuras.png", "/kaiju.png", "/flash.png"],
     specs: [
       { label: "Material", value: "Resina Premium" },
       { label: "Acabado", value: "Pintado a mano" },
