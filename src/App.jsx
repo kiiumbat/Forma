@@ -641,7 +641,7 @@ const PRODUCTOS = [
     color: ["#F59E0B","#F97316"],
     desc: "Velas artesanales con cera de soja natural. Aromas relajantes para el hogar, en múltiples tamaños y fragancias.",
     descFull: "Velas artesanales elaboradas con cera de soja 100% natural y pabilos de algodón orgánico. Sin parafina ni aditivos sintéticos. Fragancias disponibles: lavanda, vainilla, eucalipto, bergamota y canela. Contenedores de vidrio reciclado o cerámica impresa en 3D. Tiempo de combustión de hasta 50 horas según el tamaño. Perfectas como regalo o para crear ambientes únicos en el hogar.",
-    imgs: [],
+    imgs: ["/buda.png", "/queso.png"],
     emoji2: "🕯️",
     specs: [
       { label: "Material", value: "Cera de Soja" },
