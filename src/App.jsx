@@ -635,7 +635,7 @@ const PRODUCTOS = [
     id: 2,
     nombre: "Velas Aromáticas",
     material: "Cera de Soja",
-    emoji: "🕯️",
+    img: "/barco.png",
     badge: null,
     color: ["#F59E0B","#F97316"],
     desc: "Velas artesanales con cera de soja natural. Aromas relajantes para el hogar, en múltiples tamaños y fragancias.",
