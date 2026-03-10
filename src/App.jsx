@@ -1,4 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  'https://fikyqiognxkzpbscdeeg.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZpa3lxaW9nbnhrenBic2NkZWVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxNjkwMjEsImV4cCI6MjA4ODc0NTAyMX0.8I4tz3KgCiejYQuQwNhNMYZNijJgczux6lelUBvSvi4'
+)
 
 /* ─── GLOBAL STYLES ─── */
 const GlobalStyles = () => (
@@ -309,8 +315,12 @@ const GlobalStyles = () => (
       font-family: 'DM Mono', monospace;
       font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--cyan); border: 1px solid rgba(0,229,230,0.2);
-      padding: 5px 12px; border-radius: 999px; margin-bottom: 20px;
+      padding: 5px 12px; border-radius: 999px; margin-bottom: 12px;
     }
+    .stars-row { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; }
+    .star-svg { width: 11px; height: 11px; }
+    .star-rating { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-left: 6px; }
+    .star-count  { font-size: 11px; color: var(--muted2); margin-left: 4px; }
     .card-footer { padding-top: 20px; border-top: 1px solid var(--border); }
     .btn-wa {
       width: 100%;
@@ -345,17 +355,19 @@ const GlobalStyles = () => (
       display: flex; align-items: center; justify-content: center;
       padding: 24px;
       animation: overlayIn .25s ease forwards;
+      overflow-y: auto;
     }
     .modal {
       position: relative;
       background: var(--surface);
       border: 1px solid rgba(0,229,230,0.15);
       border-radius: 20px;
-      width: 100%; max-width: 900px; max-height: 90vh;
+      width: 100%; max-width: 900px;
       overflow: hidden;
       display: grid; grid-template-columns: 1fr 1fr;
       animation: modalIn .3s cubic-bezier(.22,1,.36,1) forwards;
       box-shadow: 0 40px 120px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,229,230,0.06);
+      max-height: 90vh;
     }
 
     /* ── MODAL LEFT (gallery) ── */
@@ -414,6 +426,7 @@ const GlobalStyles = () => (
       padding: 36px 32px;
       display: flex; flex-direction: column;
       overflow-y: auto;
+      max-height: 90vh;
     }
     .modal-info::-webkit-scrollbar { width: 3px; }
     .modal-badge {
@@ -464,6 +477,99 @@ const GlobalStyles = () => (
       padding: 6px 14px; border-radius: 999px; margin-bottom: 20px;
     }
     .modal-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+    
+    /* ── REVIEWS SECTION ── */
+    .reviews-section { margin-bottom: 24px; }
+    .reviews-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px; letter-spacing: 0.02em;
+      color: var(--white); margin-bottom: 16px;
+    }
+    .reviews-list {
+      display: flex; flex-direction: column; gap: 12px;
+      max-height: 200px; overflow-y: auto; margin-bottom: 16px;
+    }
+    .reviews-list::-webkit-scrollbar { width: 3px; }
+    .review-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px;
+    }
+    .review-header {
+      display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;
+    }
+    .review-author {
+      font-size: 12px; font-weight: 500; color: var(--cyan);
+      font-family: 'DM Mono', monospace;
+    }
+    .review-rating {
+      display: flex; gap: 2px;
+    }
+    .review-rating .star-svg { width: 10px; height: 10px; }
+    .review-text {
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+    }
+    .review-date {
+      font-size: 9px; color: var(--muted2); margin-top: 6px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ── REVIEW FORM ── */
+    .review-form {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-group:last-child { margin-bottom: 0; }
+    .form-label {
+      display: block; font-size: 10px; text-transform: uppercase;
+      color: var(--muted2); margin-bottom: 4px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.1em;
+    }
+    .form-input, .form-textarea {
+      width: 100%; padding: 8px 10px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(0,229,230,0.2);
+      border-radius: 4px; color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+    }
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: var(--muted2);
+    }
+    .form-textarea { resize: vertical; min-height: 60px; }
+    .star-input {
+      display: flex; gap: 6px; align-items: center;
+    }
+    .star-btn {
+      background: none; border: none; cursor: pointer;
+      width: 24px; height: 24px; padding: 0;
+      font-size: 18px; transition: transform .2s;
+    }
+    .star-btn:hover { transform: scale(1.2); }
+    .star-btn.filled { color: #F59E0B; }
+    .star-btn:not(.filled) { color: var(--muted2); }
+
+    .btn-submit-review {
+      width: 100%;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: rgba(0,229,230,0.15); color: var(--cyan);
+      border: 1px solid rgba(0,229,230,0.3); border-radius: var(--radius);
+      padding: 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .btn-submit-review:hover {
+      background: rgba(0,229,230,0.25); border-color: var(--cyan);
+    }
+
     .modal-actions { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
     .btn-wa-lg {
       display: inline-flex; align-items: center; justify-content: center; gap: 12px;
@@ -612,6 +718,13 @@ const WAIcon = ({ size = 18 }) => (
   </svg>
 );
 
+/* ─── STAR ─── */
+const Star = ({ filled }) => (
+  <svg className="star-svg" viewBox="0 0 12 12" fill={filled ? "#F59E0B" : "#2A3040"} aria-hidden>
+    <path d="M6 1l1.39 2.81L11 4.24l-2.5 2.44.59 3.44L6 8.5l-3.09 1.62.59-3.44L1 4.24l3.61-.43z"/>
+  </svg>
+);
+
 /* ─── DATA ─── */
 const PRODUCTOS = [
   {
@@ -624,6 +737,12 @@ const PRODUCTOS = [
     desc: "Soporte de escritorio para móviles y tablets impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica.",
     descFull: "Soporte de escritorio de alta calidad para móviles y tablets, fabricado en PLA marmolado de primera calidad. Diseñado ergonómicamente para mantener tu dispositivo en el ángulo perfecto para visualización y videollamadas. Compatible con carga inalámbrica, sin necesidad de retirar el dispositivo. Base amplia y antideslizante para máxima estabilidad. Disponible en varios colores de filamento marmolado.",
     imgs: ["/soporte.png", "/soporte.png", "/soporte.png"],
+    rating: 4.9,
+    reviews: [
+      { author: "María G.", rating: 5, text: "Excelente calidad, muy estable y práctico", date: "2025-02-15" },
+      { author: "Carlos M.", rating: 5, text: "Perfecto, llegó rápido y bien empaquetado", date: "2025-02-10" },
+      { author: "Ana L.", rating: 4, text: "Bueno, pero esperaba más colores", date: "2025-02-05" },
+    ],
     specs: [
       { label: "Material", value: "PLA Marmolado" },
       { label: "Colores", value: "Blanco, Negro, Gris" },
@@ -641,6 +760,12 @@ const PRODUCTOS = [
     desc: "Velas artesanales con cera de soja natural. Aromas relajantes para el hogar, en múltiples tamaños y fragancias.",
     descFull: "Velas artesanales elaboradas con cera de soja 100% natural y pabilos de algodón orgánico. Sin parafina ni aditivos sintéticos. Fragancias disponibles: lavanda, vainilla, eucalipto, bergamota y canela. Contenedores de vidrio reciclado o cerámica impresa en 3D. Tiempo de combustión de hasta 50 horas según el tamaño. Perfectas como regalo o para crear ambientes únicos en el hogar.",
     imgs: ["/buda.png", "/queso.png"],
+    rating: 4.8,
+    reviews: [
+      { author: "Laura P.", rating: 5, text: "Aroma increíble, muy relajante", date: "2025-02-12" },
+      { author: "Juan S.", rating: 5, text: "La duración es excepcional", date: "2025-02-08" },
+      { author: "Rosa D.", rating: 4, text: "Buenas, aunque el aroma se va rápido", date: "2025-02-01" },
+    ],
     specs: [
       { label: "Material", value: "Cera de Soja" },
       { label: "Fragancias", value: "5 opciones" },
@@ -655,9 +780,15 @@ const PRODUCTOS = [
     img: "/clauer.png",
     badge: "Personalizable",
     color: ["#A855F7","#EC4899"],
-    desc: "Llaveros con tu nombre, iniciales, logo o diseño y con opción de añadir NFC. Impresos en PLA de alta calidad con acabado premium.",
+    desc: "Llaveros con tu nombre, iniciales, logo o diseño. Impresos en PLA de alta calidad con acabado premium.",
     descFull: "Llaveros completamente personalizables impresos en PLA de alta resolución. Puedes incluir tu nombre, iniciales, logo corporativo o cualquier diseño que tengas en mente. Opción de integrar chip NFC para compartir tu contacto, enlace web o cualquier información digital con un simple toque. Acabado liso o texturado según preferencia. Resistentes y ligeros, perfectos para uso diario o como detalle corporativo.",
     imgs: ["/clauer.png", "/clauer.png", "/clauer.png"],
+    rating: 5.0,
+    reviews: [
+      { author: "David R.", rating: 5, text: "Mi nombre perfecto, muy original", date: "2025-02-14" },
+      { author: "Elena T.", rating: 5, text: "Entrega rápida y producto impecable", date: "2025-02-09" },
+      { author: "Miguel A.", rating: 5, text: "La personalización salió perfecta", date: "2025-02-03" },
+    ],
     specs: [
       { label: "Material", value: "PLA Multicolor" },
       { label: "Opción NFC", value: "Disponible" },
@@ -673,8 +804,14 @@ const PRODUCTOS = [
     badge: "Ed. Limitada",
     color: ["#F97316","#EAB308"],
     desc: "Figuras artesanales en resina de alta resolución. Regalos únicos para coleccionistas.",
-    descFull: "Figuras artesanales fabricadas en resina fotopolimérica de alta resolución con acabado a mano. Cada pieza es única y pasa por un proceso de pintura artesanal multicapa. Disponibles en diferentes tamaños, desde miniaturas de 5cm hasta figuras de 20cm. Ideales para coleccionistas, decoración del hogar o como regalo especial. Edición limitada — pocas unidades disponibles. También realizamos encargos de figuras personalizadas.",
+    descFull: "Figuras artesanales fabricadas en resina fotopolimérica de alta resolución con acabado a mano. Cada pieza es única y pasa por un proceso de pintura artesanal multicapa. Disponibles en diferentes tamaños, desde miniaturas de 5cm hasta figuras de 20cm. Ideales para coleccionistas, decoración del hogar o como regalo especial. Edición limitada — pocas unidades disponibles.",
     imgs: ["/figuras.png", "/kaiju.png", "/flash.png"],
+    rating: 4.9,
+    reviews: [
+      { author: "Sofía N.", rating: 5, text: "Obra de arte en miniatura", date: "2025-02-11" },
+      { author: "Pablo H.", rating: 5, text: "Detalles increíbles, pintado a mano", date: "2025-02-06" },
+      { author: "Claudia V.", rating: 4, text: "Perfecta, aunque frágil al empacar", date: "2025-01-28" },
+    ],
     specs: [
       { label: "Material", value: "Resina Premium" },
       { label: "Acabado", value: "Pintado a mano" },
@@ -689,6 +826,9 @@ const TELEFONO = "34614819874";
 /* ─── PRODUCT MODAL ─── */
 const ProductModal = ({ item, onClose, onWhatsapp }) => {
   const [activeImg, setActiveImg] = useState(0);
+  const [reviews, setReviews] = useState(item.reviews || []);
+  const [formData, setFormData] = useState({ author: "", rating: 0, text: "" });
+  
   const hasImgs = item.imgs && item.imgs.length > 0;
   const totalImgs = hasImgs ? item.imgs.length : 0;
 
@@ -705,6 +845,20 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
 
   const prev = () => setActiveImg(i => (i - 1 + totalImgs) % totalImgs);
   const next = () => setActiveImg(i => (i + 1) % totalImgs);
+
+  const submitReview = (e) => {
+    e.preventDefault();
+    if (formData.author && formData.rating > 0 && formData.text) {
+      const newReview = {
+        author: formData.author,
+        rating: formData.rating,
+        text: formData.text,
+        date: new Date().toISOString().split('T')[0]
+      };
+      setReviews([newReview, ...reviews]);
+      setFormData({ author: "", rating: 0, text: "" });
+    }
+  };
 
   return (
     <div
@@ -771,6 +925,12 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
             {item.material}
           </div>
 
+          <div className="stars-row">
+            {[1,2,3,4,5].map(s => <Star key={s} filled={s <= Math.round(item.rating)} />)}
+            <span className="star-rating">{item.rating}</span>
+            <span className="star-count">({reviews.length} reseñas)</span>
+          </div>
+
           <p className="modal-desc-full">{item.descFull}</p>
 
           <div className="modal-divider" aria-hidden />
@@ -782,6 +942,73 @@ const ProductModal = ({ item, onClose, onWhatsapp }) => {
                 <div className="modal-spec-value">{s.value}</div>
               </div>
             ))}
+          </div>
+
+          {/* Reviews Section */}
+          <div className="reviews-section">
+            <div className="reviews-title">💬 Opiniones ({reviews.length})</div>
+            {reviews.length > 0 && (
+              <div className="reviews-list">
+                {reviews.map((review, i) => (
+                  <div key={i} className="review-item">
+                    <div className="review-header">
+                      <span className="review-author">{review.author}</span>
+                      <div className="review-rating">
+                        {[1,2,3,4,5].map(s => (
+                          <Star key={s} filled={s <= review.rating} />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="review-text">{review.text}</div>
+                    <div className="review-date">{review.date}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Review Form */}
+            <form className="review-form" onSubmit={submitReview}>
+              <div className="form-group">
+                <label className="form-label">Tu nombre</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  placeholder="Ej: María"
+                  value={formData.author}
+                  onChange={(e) => setFormData({...formData, author: e.target.value})}
+                  maxLength="30"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Puntuación</label>
+                <div className="star-input">
+                  {[1,2,3,4,5].map(num => (
+                    <button
+                      key={num}
+                      type="button"
+                      className={`star-btn ${formData.rating >= num ? 'filled' : ''}`}
+                      onClick={() => setFormData({...formData, rating: num})}
+                      aria-label={`${num} estrella${num > 1 ? 's' : ''}`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Tu opinión</label>
+                <textarea
+                  className="form-textarea"
+                  placeholder="¿Qué te pareció el producto?"
+                  value={formData.text}
+                  onChange={(e) => setFormData({...formData, text: e.target.value})}
+                  maxLength="150"
+                />
+              </div>
+              <button type="submit" className="btn-submit-review">
+                Enviar opinión
+              </button>
+            </form>
           </div>
 
           <div className="modal-actions">
@@ -970,6 +1197,11 @@ export default function Forma3D() {
                 <p className="card-desc" itemProp="description">{item.desc}</p>
                 <div className="card-material" aria-label={`Material: ${item.material}`}>
                   {item.material}
+                </div>
+                <div className="stars-row">
+                  {[1,2,3,4,5].map(s => <Star key={s} filled={s <= Math.round(item.rating)} />)}
+                  <span className="star-rating">{item.rating}</span>
+                  <span className="star-count">({item.reviews.length} reseñas)</span>
                 </div>
                 <div className="card-footer">
                   <button
