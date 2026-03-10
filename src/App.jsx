@@ -1249,7 +1249,7 @@ export default function Forma3D() {
             <ul className="footer-links">
               <li><a href="#catalogo">Catálogo</a></li>
               <li><a href="#personalizado">Personalizado</a></li>
-              <li><a href="mailto:hola@forma3d.es">hola@forma3d.es</a></li>
+              <li><a href="mailto:hola@forma3d.info">hola@forma3d.info</a></li>
               <li><a href="#" aria-label="Aviso legal">Legal</a></li>
             </ul>
           </nav>
