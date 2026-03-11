@@ -729,12 +729,12 @@ const Star = ({ filled }) => (
 const PRODUCTOS = [
   {
     id: 1,
-    nombre: "Soporte Móviles/Tablets",
+    nombre: "Articulos de Escritorio",
     material: "PLA Marmolado",
     img: "/soporte.png",
     badge: null,
     color: ["#22D3EE","#5B8CFF"],
-    desc: "Soporte de escritorio para móviles y tablets impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica.",
+    desc: "Soportes de escritorio para móviles y tablets, articulos de organizacion de cableado impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica.",
     descFull: "Soporte de escritorio de alta calidad para móviles y tablets, fabricado en PLA marmolado de primera calidad. Diseñado ergonómicamente para mantener tu dispositivo en el ángulo perfecto para visualización y videollamadas. Compatible con carga inalámbrica, sin necesidad de retirar el dispositivo. Base amplia y antideslizante para máxima estabilidad. Disponible en varios colores de filamento marmolado.",
     imgs: ["/soporte.png", "/soporte.png", "/soporte.png"],
     rating: 4.9,
