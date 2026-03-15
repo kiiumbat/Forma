@@ -765,8 +765,8 @@ const PRODUCTOS = [
       { author: "Laura P.", rating: 5, text: "Aroma increíble, muy relajante", date: "2025-02-12" },
       { author: "Juan S.", rating: 5, text: "La duración es excepcional", date: "2025-02-08" },
       { author: "Rosa D.", rating: 4, text: "Buenas, aunque el aroma se va rápido", date: "2025-02-01" },
-        shopifyLink: "https://formas3d.myshopify.com/", // ← NUEV
     ],
+    shopifyLink: "https://formas3d.myshopify.com",
     specs: [
       { label: "Material", value: "Cera de Soja" },
       { label: "Fragancias", value: "5 opciones" },
