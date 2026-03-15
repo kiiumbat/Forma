@@ -1052,7 +1052,13 @@ export default function Forma3D() {
     window.open(`https://wa.me/${TELEFONO}?text=${msg}`, "_blank", "noopener");
   }, []);
 
-  const openModal = (item) => setModalItem(item);
+  const openModal = (item) => {
+  if (item.shopifyLink) {
+    window.open(item.shopifyLink, "_blank", "noopener");
+  } else {
+    setModalItem(item);
+  }
+};
   const closeModal = () => setModalItem(null);
 
   return (
