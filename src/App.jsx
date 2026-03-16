@@ -736,7 +736,7 @@ const PRODUCTOS = [
     color: ["#22D3EE","#5B8CFF"],
     desc: "Soportes de escritorio para móviles y tablets, articulos de organizacion de cableado impreso en PLA marmolado. Estable, elegante y compatible con carga inalámbrica.",
     descFull: "Soporte de escritorio de alta calidad para móviles y tablets, fabricado en PLA marmolado de primera calidad. Diseñado ergonómicamente para mantener tu dispositivo en el ángulo perfecto para visualización y videollamadas. Compatible con carga inalámbrica, sin necesidad de retirar el dispositivo. Base amplia y antideslizante para máxima estabilidad. Disponible en varios colores de filamento marmolado.",
-    imgs: ["/soporte.png", "/soporte.png", "/soporte.png"],
+    imgs: ["/soporte.png", "/soporte2.png", "/soporte3.png"],
     rating: 4.9,
     reviews: [
       { author: "María G.", rating: 5, text: "Excelente calidad, muy estable y práctico", date: "2025-02-15" },
