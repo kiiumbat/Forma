@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contacto — Forma3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --w:#ffffff;--off:#f9f9f8;--g1:#f0efed;--g2:#e2e1de;--g3:#c8c7c3;--g4:#999896;--g5:#555452;--blk:#1a1918;
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+}
+html{font-size:16px;}
+body{font-family:var(--sans);color:var(--blk);background:var(--w);min-height:100vh;display:flex;align-items:center;justify-content:center;}
+
+.wrap{
+  max-width:480px;width:90%;padding:64px 0;
+}
+
+.kicker{
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--g4);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.kicker::before{content:'';width:20px;height:1px;background:var(--g3);}
+
+h1{
+  font-family:var(--serif);font-size:clamp(40px,6vw,60px);font-weight:400;line-height:1.05;
+  margin-bottom:40px;
+}
+h1 em{font-style:italic;color:var(--g4);}
+
+.contact-items{display:flex;flex-direction:column;gap:16px;margin-bottom:32px;}
+
+.contact-item{
+  display:flex;align-items:center;gap:20px;
+  padding:22px 26px;border:1px solid var(--g2);
+  text-decoration:none;color:var(--blk);
+  transition:border-color .2s,box-shadow .2s;
+}
+.contact-item:hover{border-color:var(--blk);box-shadow:0 4px 20px rgba(0,0,0,0.06);}
+
+.contact-item svg{flex-shrink:0;}
+
+.contact-item-label{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--g4);margin-bottom:5px;
+}
+.contact-item-value{
+  font-size:15px;font-weight:500;letter-spacing:.01em;
+}
+
+.note{
+  font-size:12px;color:var(--g4);line-height:1.75;
+  padding-top:24px;border-top:1px solid var(--g2);
+}
+
+.back{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--g4);text-decoration:none;margin-bottom:48px;
+  transition:color .2s;
+}
+.back:hover{color:var(--blk);}
+.back svg{transition:transform .2s;}
+.back:hover svg{transform:translateX(-3px);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="javascript:window.close()" class="back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Volver
+  </a>
+
+  <p class="kicker">Forma3D · Barcelona</p>
+  <h1>Contacta<br><em>con nosotros</em></h1>
+
+  <div class="contact-items">
+    <a href="mailto:contacto@forma3d.cat" class="contact-item">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="1" y="4" width="20" height="14" rx="2" stroke="#1a1918" stroke-width="1.4"/>
+        <path d="M1 7l10 6.5L21 7" stroke="#1a1918" stroke-width="1.4"/>
+      </svg>
+      <div>
+        <p class="contact-item-label">Email</p>
+        <p class="contact-item-value">contacto@forma3d.cat</p>
+      </div>
+    </a>
+
+    <a href="tel:+34614819874" class="contact-item">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <path d="M4 3h4.5l1.5 4.5-2.5 1.5c1.2 2.4 3 4.2 5.5 5.5l1.5-2.5L19 13.5V18c0 .6-.5 1-1 1C7 19 3 9 3 4c0-.6.4-1 1-1z" stroke="#1a1918" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <p class="contact-item-label">Teléfono</p>
+        <p class="contact-item-value">+34 614 819 874</p>
+      </div>
+    </a>
+  </div>
+
+  <p class="note">Respondemos en menos de 24h. También puedes escribirnos por WhatsApp al mismo número.</p>
+</div>
+</body>
+</html>
