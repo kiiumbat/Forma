@@ -1,1 +1,553 @@
- 
+ <!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forma3d — Velas y productos impresos en 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #1a1a1a; --gray: #888; --light: #f7f7f5;
+    --accent: #c8e135; --white: #ffffff;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Jost', sans-serif;
+  }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--black); background: var(--white); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 64px;
+    background: rgba(255,255,255,0.96); border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    backdrop-filter: blur(10px);
+  }
+  .nav-logo { font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: 0.04em; color: var(--black); text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+  .nav-links a { font-size: 12px; font-weight: 400; letter-spacing: 0.08em; text-decoration: none; color: var(--black); text-transform: uppercase; transition: opacity 0.2s; position: relative; padding-bottom: 2px; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: var(--black); transform: scaleX(0); transition: transform 0.25s; }
+  .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+  .nav-cart { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; border-left: 0.5px solid rgba(0,0,0,0.15); padding-left: 24px; }
+  .nav-cart svg { width: 18px; height: 18px; }
+
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; padding-top: 64px; }
+  .hero-text { padding: 80px 48px 80px 80px; display: flex; flex-direction: column; justify-content: center; animation: fadeUp 0.9s ease both; }
+  .hero-label { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); margin-bottom: 28px; }
+  .hero-title { font-family: var(--serif); font-size: clamp(48px, 5vw, 76px); font-weight: 300; line-height: 1.08; margin-bottom: 20px; }
+  .hero-sub { font-size: 14px; font-weight: 300; color: var(--gray); margin-bottom: 48px; }
+  .btn-outline { display: inline-block; padding: 14px 36px; border: 1px solid var(--black); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: var(--black); transition: background 0.25s, color 0.25s; cursor: pointer; background: transparent; font-family: var(--sans); align-self: flex-start; }
+  .btn-outline:hover { background: var(--black); color: var(--white); }
+  .hero-img { overflow: hidden; animation: fadeIn 1.1s ease both 0.2s; }
+  .ph-mosaic { height: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 3px; padding: 3px; background: #e8e4de; }
+  .mosaic-cell { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; overflow: hidden; position: relative; }
+
+  .section-tabs { display: flex; border-bottom: 0.5px solid rgba(0,0,0,0.1); background: var(--white); position: sticky; top: 64px; z-index: 50; }
+  .section-tab { flex: 1; padding: 18px 12px; text-align: center; cursor: pointer; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; text-decoration: none; }
+  .section-tab:hover { color: var(--black); }
+  .section-tab.active { color: var(--black); border-bottom-color: var(--black); }
+
+  .sec-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; }
+  .sec-header-left .eyebrow { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gray); margin-bottom: 10px; }
+  .sec-header-left h2 { font-family: var(--serif); font-size: clamp(36px, 3.5vw, 56px); font-weight: 300; line-height: 1.05; }
+  .sec-header a { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-decoration: none; border-bottom: 0.5px solid currentColor; padding-bottom: 2px; white-space: nowrap; transition: color 0.2s; }
+  .sec-header a:hover { color: var(--black); }
+
+  .prod-section { padding: 100px 80px; }
+  .prod-section.alt { background: var(--light); }
+
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+  .grid-asymm { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-template-rows: auto; gap: 3px; }
+  .card-tall { grid-row: span 2; }
+
+  .pcard { position: relative; overflow: hidden; cursor: pointer; background: #e8e4de; aspect-ratio: 3/4; }
+  .pcard.sq { aspect-ratio: 1/1; }
+  .pcard-visual { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; transition: transform 0.6s ease; }
+  .pcard:hover .pcard-visual { transform: scale(1.04); }
+  .pcard-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 24px; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); color: white; transform: translateY(8px); opacity: 0; transition: opacity 0.3s, transform 0.3s; }
+  .pcard:hover .pcard-overlay { opacity: 1; transform: translateY(0); }
+  .pcard-overlay h3 { font-family: var(--serif); font-size: 22px; font-weight: 300; margin-bottom: 4px; }
+  .pcard-overlay p { font-size: 12px; opacity: 0.75; letter-spacing: 0.04em; }
+  .pcard-tag { position: absolute; top: 16px; left: 16px; background: var(--accent); color: #1a1a1a; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px; font-weight: 500; }
+
+  .vela-pillar { border-radius: 3px; position: relative; }
+  .vela-pillar::after { content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 2px; height: 13px; background: #aaa; border-radius: 1px; animation: flicker 1.8s ease-in-out infinite; }
+  .figura-bust { border-radius: 50% 50% 30% 30% / 40% 40% 30% 30%; }
+  .llavero-shape { border-radius: 50%; border: 3px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-align: center; line-height: 1.2; }
+
+  .ideas-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 300px 220px; gap: 3px; }
+  .idea-card { position: relative; overflow: hidden; cursor: pointer; display: flex; align-items: flex-end; padding: 28px; }
+  .idea-card.span2 { grid-column: span 2; }
+  .idea-card-bg { position: absolute; inset: 0; transition: transform 0.6s ease; }
+  .idea-card:hover .idea-card-bg { transform: scale(1.03); }
+  .idea-card-content { position: relative; z-index: 1; color: white; }
+  .idea-card-content .idea-num { font-family: var(--serif); font-size: 56px; font-weight: 300; line-height: 1; opacity: 0.35; margin-bottom: 8px; }
+  .idea-card-content h3 { font-family: var(--serif); font-size: 26px; font-weight: 300; margin-bottom: 6px; }
+  .idea-card-content p { font-size: 12px; opacity: 0.7; letter-spacing: 0.04em; }
+
+  .features-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 0.5px solid rgba(0,0,0,0.1); border-bottom: 0.5px solid rgba(0,0,0,0.1); }
+  .feature-item { padding: 48px 40px; border-right: 0.5px solid rgba(0,0,0,0.1); text-align: center; }
+  .feature-item:last-child { border-right: none; }
+  .feature-num { font-family: var(--serif); font-size: 42px; font-weight: 300; margin-bottom: 8px; line-height: 1; }
+  .feature-label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); }
+
+  .cta-banner { padding: 120px 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: var(--black); color: var(--white); position: relative; overflow: hidden; }
+  .cta-banner::before { content: 'FORMA3D'; position: absolute; font-family: var(--serif); font-size: 220px; font-weight: 300; opacity: 0.04; white-space: nowrap; letter-spacing: -0.02em; pointer-events: none; user-select: none; }
+  .cta-banner h2 { font-family: var(--serif); font-size: clamp(36px, 4vw, 64px); font-weight: 300; margin-bottom: 20px; position: relative; }
+  .cta-banner p { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.6); margin-bottom: 48px; max-width: 460px; line-height: 1.8; position: relative; }
+  .btn-white { display: inline-block; padding: 14px 40px; border: 1px solid rgba(255,255,255,0.5); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: var(--white); background: transparent; transition: background 0.25s, border-color 0.25s; cursor: pointer; font-family: var(--sans); position: relative; }
+  .btn-white:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+  footer { padding: 60px 80px 40px; border-top: 0.5px solid rgba(0,0,0,0.1); display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+  .footer-brand .nav-logo { display: block; margin-bottom: 16px; }
+  .footer-brand p { font-size: 13px; font-weight: 300; color: var(--gray); line-height: 1.7; max-width: 220px; }
+  footer h4 { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px; }
+  footer ul { list-style: none; }
+  footer ul li { margin-bottom: 10px; }
+  footer ul li a { font-size: 13px; font-weight: 300; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+  footer ul li a:hover { color: var(--black); }
+  .footer-bottom { padding: 20px 80px; border-top: 0.5px solid rgba(0,0,0,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--gray); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes flicker { 0%,100% { opacity: 1; height: 13px; } 50% { opacity: 0.5; height: 10px; } }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-text { padding: 100px 24px 48px; }
+    .hero-img { height: 70vw; }
+    .prod-section { padding: 60px 24px; }
+    .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+    .grid-asymm { grid-template-columns: 1fr 1fr; }
+    .card-tall { grid-row: span 1; }
+    .ideas-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .idea-card.span2 { grid-column: span 1; }
+    .features-strip { grid-template-columns: 1fr 1fr; }
+    .cta-banner { padding: 80px 24px; }
+    footer { padding: 40px 24px; grid-template-columns: 1fr 1fr; }
+    .footer-bottom { padding: 16px 24px; flex-direction: column; gap: 8px; }
+    .section-tabs { overflow-x: auto; }
+    .section-tab { min-width: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Forma3d</a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Inicio</a></li>
+    <li><a href="#velas">Velas</a></li>
+    <li><a href="#figuras">Figuras</a></li>
+    <li><a href="#llaveros">Llaveros</a></li>
+    <li><a href="#ideas">Ideas</a></li>
+    <li><a href="#">Contacto</a></li>
+  </ul>
+  <div class="nav-cart">
+    <span>Cesta</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+    </svg>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-label">Barcelona · Artesanal · Impresión 3D</p>
+    <h1 class="hero-title">velas y productos<br>impresos en 3d</h1>
+    <p class="hero-sub">Convierte cada idea en realidad</p>
+    <a href="#velas" class="btn-outline">Explorar colección</a>
+  </div>
+  <div class="hero-img">
+    <div class="ph-mosaic">
+      <div class="mosaic-cell" style="background:#1c1c1c;">
+        <div class="figura-bust" style="width:70px;height:110px;background:#2a2a2a;border:1px solid #333;"></div>
+        <span style="color:#555;font-size:10px;letter-spacing:0.14em;">FIGURAS</span>
+      </div>
+      <div class="mosaic-cell" style="background:#e8e0d0;">
+        <div class="vela-pillar" style="width:48px;height:130px;background:#e8c84a;"></div>
+        <span style="color:#aaa;font-size:10px;letter-spacing:0.14em;margin-top:20px;">VELAS</span>
+      </div>
+      <div class="mosaic-cell" style="background:#f0ebe4;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:16px;">
+          <div class="llavero-shape" style="width:44px;height:44px;color:#1a1a1a;border-color:#1a1a1a;font-size:8px;">F3D</div>
+          <div class="llavero-shape" style="width:44px;height:44px;color:#1a1a1a;border-color:#1a1a1a;font-size:8px;">BCN</div>
+          <div class="llavero-shape" style="width:44px;height:44px;color:#c8a800;border-color:#c8a800;font-size:12px;">♥</div>
+        </div>
+        <span style="color:#aaa;font-size:10px;letter-spacing:0.14em;">LLAVEROS</span>
+      </div>
+      <div class="mosaic-cell" style="background:#1a1a1a;gap:10px;">
+        <div style="border:1.5px solid #c8e135;border-radius:3px;padding:7px 16px;">
+          <span style="color:#c8e135;font-size:10px;font-weight:700;letter-spacing:0.14em;">FORMA3D</span>
+        </div>
+        <div style="border:1.5px solid #c8e135;border-radius:3px;padding:7px 16px;">
+          <span style="color:#c8e135;font-size:10px;font-weight:700;letter-spacing:0.14em;">FORMA3D</span>
+        </div>
+        <span style="color:#555;font-size:10px;letter-spacing:0.14em;">IDEAS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION TABS -->
+<div class="section-tabs">
+  <a href="#velas" class="section-tab">Velas</a>
+  <a href="#figuras" class="section-tab">Figuras</a>
+  <a href="#llaveros" class="section-tab">Llaveros</a>
+  <a href="#ideas" class="section-tab">Ideas</a>
+</div>
+
+<!-- FEATURES -->
+<div class="features-strip reveal">
+  <div class="feature-item"><div class="feature-num">100%</div><div class="feature-label">Artesanal</div></div>
+  <div class="feature-item"><div class="feature-num">48h</div><div class="feature-label">Envío express</div></div>
+  <div class="feature-item"><div class="feature-num">3D</div><div class="feature-label">Impresión propia</div></div>
+  <div class="feature-item"><div class="feature-num">∞</div><div class="feature-label">Personalizable</div></div>
+</div>
+
+
+<!-- ════════════════ VELAS ════════════════ -->
+<section id="velas" class="prod-section reveal">
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <p class="eyebrow">Colección</p>
+      <h2>Velas artesanales</h2>
+    </div>
+    <a href="#">Ver todas las velas</a>
+  </div>
+
+  <div class="grid-asymm">
+    <div class="pcard card-tall" style="aspect-ratio:auto;min-height:500px;">
+      <div class="pcard-visual" style="background:#ece4d8;height:100%;flex-direction:column;gap:20px;padding:40px;">
+        <div class="vela-pillar" style="width:52px;height:180px;background:#e8c84a;"></div>
+        <div class="vela-pillar" style="width:38px;height:130px;background:#d4a035;"></div>
+      </div>
+      <div class="pcard-tag">Más vendida</div>
+      <div class="pcard-overlay"><h3>Vela textura natural</h3><p>Cera de soja · Hecha a mano · 60h</p></div>
+    </div>
+    <div class="pcard sq">
+      <div class="pcard-visual" style="background:#ddd8d0;flex-direction:column;gap:10px;">
+        <div style="width:75px;height:75px;background:#c8c0b0;border-radius:50%;"></div>
+        <span style="font-size:10px;letter-spacing:0.1em;color:#aaa;">ESFERA</span>
+      </div>
+      <div class="pcard-overlay"><h3>Vela esfera</h3><p>Forma única · 40h</p></div>
+    </div>
+    <div class="pcard sq">
+      <div class="pcard-visual" style="background:#e0d8cc;flex-direction:column;gap:10px;">
+        <div style="width:36px;height:110px;background:#b8b0a0;border-radius:4px;transform:rotate(-4deg) skewX(-3deg);position:relative;">
+          <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:2px;height:12px;background:#aaa;border-radius:1px;"></div>
+        </div>
+        <span style="font-size:10px;letter-spacing:0.1em;color:#aaa;">TORSADA</span>
+      </div>
+      <div class="pcard-overlay"><h3>Vela torsada</h3><p>Diseño exclusivo · Varios colores</p></div>
+    </div>
+    <div class="pcard sq">
+      <div class="pcard-visual" style="background:#f0e8dc;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:6px;align-items:flex-end;">
+          <div class="vela-pillar" style="width:20px;height:75px;background:#e8a030;"></div>
+          <div class="vela-pillar" style="width:20px;height:100px;background:#d45a20;"></div>
+          <div class="vela-pillar" style="width:20px;height:65px;background:#c8381a;"></div>
+        </div>
+        <span style="font-size:10px;letter-spacing:0.1em;color:#aaa;">SET TRÍO</span>
+      </div>
+      <div class="pcard-overlay"><h3>Set de tres velas</h3><p>Regalo perfecto · Aromáticas</p></div>
+    </div>
+    <div class="pcard sq">
+      <div class="pcard-visual" style="background:#e8e0d8;flex-direction:column;gap:10px;">
+        <div style="width:80px;height:80px;background:#d0c8b8;clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%);"></div>
+        <span style="font-size:10px;letter-spacing:0.1em;color:#aaa;">GEOMÉTRICA</span>
+      </div>
+      <div class="pcard-overlay"><h3>Vela geométrica</h3><p>Diseño minimalista · Deco</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════ FIGURAS ════════════════ -->
+<section id="figuras" class="prod-section alt reveal">
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <p class="eyebrow">Impresión 3D</p>
+      <h2>Figuras</h2>
+    </div>
+    <a href="#">Ver todas las figuras</a>
+  </div>
+
+  <div class="grid-4">
+    <div class="pcard">
+      <div class="pcard-visual" style="background:#1a1a1a;flex-direction:column;gap:12px;">
+        <div class="figura-bust" style="width:70px;height:90px;background:#2a2a2a;border:1px solid #333;"></div>
+        <span style="font-size:10px;letter-spacing:0.12em;color:#444;">BUSTO NEGRO</span>
+      </div>
+      <div class="pcard-tag">Negro mate</div>
+      <div class="pcard-overlay"><h3>Busto personalizado</h3><p>Resina · Negro mate</p></div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-visual" style="background:#2c2c2c;flex-direction:column;gap:12px;">
+        <div class="figura-bust" style="width:65px;height:85px;background:#888;"></div>
+        <span style="font-size:10px;letter-spacing:0.12em;color:#666;">GRIS PIEDRA</span>
+      </div>
+      <div class="pcard-overlay"><h3>Busto gris piedra</h3><p>PLA · Acabado cemento</p></div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-visual" style="background:#f0ece8;flex-direction:column;gap:12px;">
+        <div style="width:55px;height:75px;background:#d0cac0;border-radius:8px 8px 4px 4px;"></div>
+        <span style="font-size:10px;letter-spacing:0.12em;color:#aaa;">PERSONAJE</span>
+      </div>
+      <div class="pcard-overlay"><h3>Figura de personaje</h3><p>Cualquier diseño · A medida</p></div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-visual" style="background:#e0ddd8;flex-direction:column;gap:12px;padding:20px;">
+        <div style="position:relative;width:68px;height:52px;">
+          <div style="position:absolute;bottom:0;left:0;width:66px;height:36px;background:#c0bcb0;border-radius:3px;"></div>
+          <div style="position:absolute;top:0;left:8px;width:50px;height:26px;background:#a0a090;border-radius:2px;"></div>
+        </div>
+        <span style="font-size:10px;letter-spacing:0.12em;color:#aaa;">CONSOLA RETRO</span>
+      </div>
+      <div class="pcard-overlay"><h3>Consola retro</h3><p>Réplica fiel · Decorativa</p></div>
+    </div>
+  </div>
+
+  <div style="margin-top:3px;" class="grid-4">
+    <div class="pcard" style="grid-column:span 2;aspect-ratio:2/1;">
+      <div class="pcard-visual" style="background:#111;gap:20px;padding:32px;">
+        <div class="figura-bust" style="width:58px;height:78px;background:#1e1e1e;border:1px solid #2a2a2a;"></div>
+        <div class="figura-bust" style="width:70px;height:95px;background:#222;border:1px solid #2e2e2e;"></div>
+        <div class="figura-bust" style="width:52px;height:70px;background:#1a1a1a;border:1px solid #252525;"></div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:5px 12px;background:#0a0a0a;border:1px solid #c8e135;"><span style="color:#c8e135;font-size:9px;font-weight:700;letter-spacing:0.14em;">FORMA3D</span></div>
+          <div style="padding:5px 12px;background:#0a0a0a;border:1px solid #c8e135;"><span style="color:#c8e135;font-size:9px;font-weight:700;letter-spacing:0.14em;">FORMA3D</span></div>
+        </div>
+      </div>
+      <div class="pcard-overlay"><h3>Pack colección</h3><p>Bustos + badges · Set completo</p></div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-visual" style="background:#f5f2ee;flex-direction:column;gap:10px;">
+        <div style="width:60px;height:60px;background:#e0d8cc;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);"></div>
+        <span style="font-size:10px;letter-spacing:0.12em;color:#aaa;">OBJETO DECO</span>
+      </div>
+      <div class="pcard-overlay"><h3>Pieza decorativa</h3><p>Diseño geométrico · Hogar</p></div>
+    </div>
+    <div class="pcard">
+      <div class="pcard-visual" style="background:#e8e0d8;flex-direction:column;gap:10px;">
+        <div style="width:50px;height:80px;background:#c8bfb0;border-radius:25px 25px 10px 10px;position:relative;">
+          <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:20px;height:20px;background:#b0a898;border-radius:50%;"></div>
+        </div>
+        <span style="font-size:10px;letter-spacing:0.12em;color:#aaa;">TROFEO</span>
+      </div>
+      <div class="pcard-overlay"><h3>Trofeo personalizado</h3><p>Regalo · Eventos · Empresas</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════ LLAVEROS ════════════════ -->
+<section id="llaveros" class="prod-section reveal">
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <p class="eyebrow">Personalización</p>
+      <h2>Llaveros personalizables</h2>
+    </div>
+    <a href="#">Ver todos los llaveros</a>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:3px;margin-bottom:3px;">
+    <div style="background:var(--light);padding:56px 48px;display:flex;flex-direction:column;justify-content:center;">
+      <p style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gray);margin-bottom:16px;">Hecho para ti</p>
+      <h3 style="font-family:var(--serif);font-size:clamp(28px,2.5vw,40px);font-weight:300;line-height:1.1;margin-bottom:16px;">Lleva tu nombre<br>a todas partes</h3>
+      <p style="font-size:13px;font-weight:300;color:#666;line-height:1.8;margin-bottom:32px;">Imprimimos en 3D el llavero que quieras: tu nombre, logo, forma especial, mascota o cualquier idea. Entrega en 48h.</p>
+      <a href="#" class="btn-outline">Personalizar ahora</a>
+    </div>
+    <div style="background:#1a1a1a;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:20px;padding:48px;min-height:320px;">
+      <div class="llavero-shape" style="width:68px;height:68px;color:#c8e135;border-color:#c8e135;font-size:9px;">TU<br>NOMBRE</div>
+      <div class="llavero-shape" style="width:56px;height:56px;color:#fff;border-color:#555;font-size:10px;">BCN</div>
+      <div class="llavero-shape" style="width:72px;height:44px;border-radius:10px;color:#c8e135;border-color:#c8e135;font-size:9px;">MI LOGO</div>
+      <div class="llavero-shape" style="width:52px;height:52px;color:#888;border-color:#444;font-size:16px;">♥</div>
+      <div class="llavero-shape" style="width:60px;height:60px;border-radius:4px;color:#c8e135;border-color:#c8e135;font-size:9px;">F3D<br>2025</div>
+      <div class="llavero-shape" style="width:70px;height:42px;border-radius:6px;color:#777;border-color:#444;font-size:9px;">MASCOTA</div>
+    </div>
+  </div>
+
+  <div class="grid-4">
+    <div class="pcard sq">
+      <div class="pcard-visual" style="background:#f5f0ea;flex-direction:column;gap:10px;">
+        <div class="llavero-shape" style="width:62px;height:62px;color:#1a1a1a;border-color:#1a1a1a;font-size:10px;">NOMBRE</div>
+        <span style="font-size:10px;letter-spacing:0.1em;color:#aaa;">CIRCULAR</span>
+      </div>
+      <div class="pcard-overlay"><h3>Llavero circular</h3><p>Con tu nombre o texto</p></div>
+    </div>
+    <div class="pcard sq">
+      <div class="pcard-visual" style="background:#1a1a1a;flex-direction:column;gap:10px;">
+        <div class="llavero-shape" style="width:62px;height:36px;border-radius:8px;color:#c8e135;border-color:#c8e135;font-size:9px;">LOGO</div>
+        <span style="font-size:10px;letter-spacing:0.1em;color:#444;">EMPRESA</span>
+      </div>
+      <div class="pcard-overlay"><h3>Logo corporativo</h3><p>Pack empresa · Mínimo 10ud</p></div>
+    </div>
+    <div class="pcard sq">
+      <div class="pcard-visual" style="background:#f0ece4;flex-direction:column;gap:10px;">
+        <div style="width:50px;height:65px;background:#c8c0b0;border-radius:50% 50% 30% 30% / 40% 40% 30% 30%;position:relative;">
+          <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;border:2px solid #888;"></div>
+        </div>
+        <span style="font-size:10px;letter-spacing:0.1em;color:#aaa;">MINIATURA</span>
+      </div>
+      <div class="pcard-overlay"><h3>Miniatura 3D</h3><p>Tu figura en miniatura</p></div>
+    </div>
+    <div class="pcard sq">
+      <div class="pcard-visual" style="background:#e8e4de;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:5px;">
+          <div class="llavero-shape" style="width:32px;height:32px;color:#1a1a1a;border-color:#1a1a1a;font-size:9px;">A</div>
+          <div class="llavero-shape" style="width:32px;height:32px;color:#1a1a1a;border-color:#1a1a1a;font-size:9px;">B</div>
+          <div class="llavero-shape" style="width:32px;height:32px;color:#b8960a;border-color:#c8a800;font-size:9px;">C</div>
+        </div>
+        <span style="font-size:10px;letter-spacing:0.1em;color:#aaa;">LETRAS</span>
+      </div>
+      <div class="pcard-overlay"><h3>Letras sueltas</h3><p>Iniciales · Parejas · Amigos</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════ IDEAS ════════════════ -->
+<section id="ideas" class="prod-section alt reveal">
+  <div class="sec-header">
+    <div class="sec-header-left">
+      <p class="eyebrow">Inspírate</p>
+      <h2>Ideas & proyectos</h2>
+    </div>
+    <a href="#">Ver todas las ideas</a>
+  </div>
+
+  <div class="ideas-grid">
+    <div class="idea-card span2" style="background:#111;">
+      <div class="idea-card-bg" style="background:linear-gradient(135deg,#0d0d0d,#1e1e1e);"></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0.12;gap:20px;">
+        <div class="figura-bust" style="width:80px;height:110px;background:#333;"></div>
+        <div class="figura-bust" style="width:90px;height:120px;background:#2a2a2a;"></div>
+        <div class="figura-bust" style="width:70px;height:95px;background:#333;"></div>
+      </div>
+      <div class="idea-card-content">
+        <div class="idea-num">01</div>
+        <h3>Regalos únicos personalizados</h3>
+        <p>Bustos, figuras y objetos con tu cara o la de alguien especial</p>
+      </div>
+    </div>
+    <div class="idea-card" style="background:#e8c84a;">
+      <div class="idea-card-bg" style="background:linear-gradient(160deg,#e8c84a,#d4a030);"></div>
+      <div style="position:absolute;top:24px;right:24px;opacity:0.3;">
+        <div class="vela-pillar" style="width:36px;height:100px;background:#c09020;"></div>
+      </div>
+      <div class="idea-card-content" style="color:#1a1a1a;">
+        <div class="idea-num" style="color:#1a1a1a;opacity:0.2;">02</div>
+        <h3 style="color:#1a1a1a;">Velas para eventos</h3>
+        <p style="color:rgba(0,0,0,0.6);">Bodas, cumpleaños, comuniones · Aroma y forma a medida</p>
+      </div>
+    </div>
+    <div class="idea-card" style="background:#111;">
+      <div class="idea-card-bg" style="background:linear-gradient(160deg,#0e0e0e,#1e1e1e);"></div>
+      <div style="position:absolute;top:20px;right:20px;opacity:0.18;">
+        <div class="llavero-shape" style="width:80px;height:80px;color:#c8e135;border-color:#c8e135;font-size:11px;">MARCA</div>
+      </div>
+      <div class="idea-card-content">
+        <div class="idea-num">03</div>
+        <h3>Merchandising de empresa</h3>
+        <p>Llaveros y objetos con tu logo para clientes y equipo</p>
+      </div>
+    </div>
+    <div class="idea-card" style="background:#f0ece4;">
+      <div class="idea-card-bg" style="background:linear-gradient(160deg,#f0ece4,#e0d8cc);"></div>
+      <div class="idea-card-content" style="color:#1a1a1a;">
+        <div class="idea-num" style="color:#1a1a1a;opacity:0.2;">04</div>
+        <h3 style="color:#1a1a1a;">Prototipos y diseño</h3>
+        <p style="color:rgba(0,0,0,0.55);">Lleva tus diseños de Blender o Fusion360 a la realidad</p>
+      </div>
+    </div>
+    <div class="idea-card span2" style="background:#c8e135;align-items:center;justify-content:space-between;padding:40px 56px;flex-direction:row;flex-wrap:wrap;gap:24px;">
+      <div>
+        <p style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(0,0,0,0.45);margin-bottom:12px;">¿Tienes una idea?</p>
+        <h3 style="font-family:var(--serif);font-size:clamp(26px,2.5vw,42px);font-weight:300;color:#1a1a1a;line-height:1.1;">La hacemos realidad juntos</h3>
+      </div>
+      <a href="#" class="btn-outline" style="border-color:#1a1a1a;color:#1a1a1a;white-space:nowrap;align-self:center;">Cuéntanos tu idea</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="cta-banner">
+  <h2>Diseña lo que imaginas</h2>
+  <p>Cuéntanos tu idea y la convertimos en un objeto real. Presupuesto sin compromiso en menos de 24 horas.</p>
+  <a href="#" class="btn-white">Contactar ahora</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="nav-logo">Forma3d</a>
+    <p>Velas artesanales y productos impresos en 3D. Hecho con cuidado en Barcelona.</p>
+  </div>
+  <div>
+    <h4>Tienda</h4>
+    <ul>
+      <li><a href="#velas">Velas artesanales</a></li>
+      <li><a href="#figuras">Figuras 3D</a></li>
+      <li><a href="#llaveros">Llaveros personalizables</a></li>
+      <li><a href="#ideas">Ideas & proyectos</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Empresa</h4>
+    <ul>
+      <li><a href="#">Sobre nosotros</a></li>
+      <li><a href="#">Cómo trabajamos</a></li>
+      <li><a href="#">Contacto</a></li>
+    </ul>
+  </div>
+  <div>
+    <h4>Ayuda</h4>
+    <ul>
+      <li><a href="#">Envíos</a></li>
+      <li><a href="#">Devoluciones</a></li>
+      <li><a href="#">Política de privacidad</a></li>
+      <li><a href="#">Aviso legal</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2025 Forma3d. Todos los derechos reservados.</span>
+  <span style="display:flex;gap:20px;">
+    <a href="#" style="color:inherit;text-decoration:none;">Instagram</a>
+    <a href="#" style="color:inherit;text-decoration:none;">TikTok</a>
+  </span>
+</div>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => revObs.observe(el));
+
+  const tabs = document.querySelectorAll('.section-tab');
+  const secObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tabs.forEach(t => t.classList.remove('active'));
+        const match = document.querySelector(`.section-tab[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+  ['velas','figuras','llaveros','ideas'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) secObs.observe(el);
+  });
+</script>
+</body>
+</html>
