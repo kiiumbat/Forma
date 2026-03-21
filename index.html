@@ -304,9 +304,9 @@ footer ul li a:hover{color:var(--blk)}
     <li><a href="#figuras">Figuras</a></li>
     <li><a href="#llaveros">Llaveros</a></li>
     <li><a href="#ideas">Ideas</a></li>
-    <li><a href="#" onclick="window.open('contacto.html','_blank');return false;">Contacto</a></li>
+    <li><a href="#" onclick="openContact();return false;">Contacto</a></li>
   </ul>
-  <a href="#" class="nav-cta" onclick="window.open('contacto.html','_blank');return false;">Pedir ahora</a>
+  <a href="#" class="nav-cta" onclick="openContact();return false;">Pedir ahora</a>
 </nav>
 
 <!-- HERO -->
@@ -481,7 +481,7 @@ footer ul li a:hover{color:var(--blk)}
 
   <div class="idea-cta reveal">
     <h3>¿Tienes una idea en mente?</h3>
-    <a href="#" class="btn-primary" onclick="window.open('contacto.html','_blank');return false;">Cuéntanos tu proyecto</a>
+    <a href="#" class="btn-primary" onclick="openContact();return false;">Cuéntanos tu proyecto</a>
   </div>
 </section>
 
@@ -672,7 +672,7 @@ footer ul li a:hover{color:var(--blk)}
       <li><a href="#">Sobre nosotros</a></li>
       <li><a href="#">Cómo funciona</a></li>
       <li><a href="#">Proyectos</a></li>
-      <li><a href="#" onclick="window.open('contacto.html','_blank');return false;">Contacto</a></li>
+      <li><a href="#" onclick="openContact();return false;">Contacto</a></li>
     </ul>
   </div>
   <div>
@@ -690,54 +690,13 @@ footer ul li a:hover{color:var(--blk)}
   <span>Diseño &amp; impresión 3D artesanal</span>
 </div>
 
-<!-- CONTACT MODAL -->
-<div id="contact-modal" style="display:none;position:fixed;inset:0;z-index:999;align-items:center;justify-content:center;">
-  <div onclick="closeContact()" style="position:absolute;inset:0;background:rgba(26,25,24,0.55);backdrop-filter:blur(4px);"></div>
-  <div style="position:relative;background:#fff;max-width:440px;width:90%;padding:52px 44px 44px;box-shadow:0 32px 80px rgba(0,0,0,0.2);animation:modalIn .22s ease;">
-    <button onclick="closeContact()" style="position:absolute;top:18px;right:22px;background:none;border:none;cursor:pointer;font-size:24px;color:#999;line-height:1;" aria-label="Cerrar">&times;</button>
-    <p style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#999;margin-bottom:10px;">Forma3D · Barcelona</p>
-    <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:34px;font-weight:400;line-height:1.08;margin-bottom:32px;">Contacta<br><em style="font-style:italic;color:#999;">con nosotros</em></h2>
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <a href="mailto:contacto@forma3d.cat" style="display:flex;align-items:center;gap:18px;padding:18px 22px;border:1px solid #e2e1de;text-decoration:none;color:#1a1918;transition:border-color .2s,background .2s;" onmouseover="this.style.borderColor='#1a1918'" onmouseout="this.style.borderColor='#e2e1de'">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;">
-          <rect x="1" y="4" width="18" height="13" rx="2" stroke="#1a1918" stroke-width="1.4"/>
-          <path d="M1 7l9 5.5L19 7" stroke="#1a1918" stroke-width="1.4"/>
-        </svg>
-        <div>
-          <p style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#999;margin-bottom:4px;">Email</p>
-          <p style="font-size:14px;font-weight:500;letter-spacing:.01em;">contacto@forma3d.cat</p>
-        </div>
-      </a>
-      <a href="tel:+34614819874" style="display:flex;align-items:center;gap:18px;padding:18px 22px;border:1px solid #e2e1de;text-decoration:none;color:#1a1918;transition:border-color .2s;" onmouseover="this.style.borderColor='#1a1918'" onmouseout="this.style.borderColor='#e2e1de'">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="flex-shrink:0;">
-          <path d="M3 3h4l1.5 4-2 1.5c1 2 2.5 3.5 4.5 4.5L12.5 11l4 1.5V17c0 .5-.5 1-1 1C6 18 2 8 2 4c0-.5.5-1 1-1z" stroke="#1a1918" stroke-width="1.4" stroke-linejoin="round"/>
-        </svg>
-        <div>
-          <p style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#999;margin-bottom:4px;">Teléfono</p>
-          <p style="font-size:14px;font-weight:500;letter-spacing:.01em;">+34 614 819 874</p>
-        </div>
-      </a>
-    </div>
-    <p style="font-size:11px;color:#999;margin-top:24px;line-height:1.7;">Respondemos en menos de 24h. También puedes escribirnos por WhatsApp al mismo número.</p>
-  </div>
-</div>
-
-<style>
-@keyframes modalIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-</style>
-
 <script>
 function openContact(){
-  var m=document.getElementById('contact-modal');
-  m.style.display='flex';
-  document.body.style.overflow='hidden';
+  var html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Contacto \u2014 Forma3D</title><link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:\'DM Sans\',sans-serif;background:#fff;color:#1a1918;min-height:100vh;display:flex;align-items:center;justify-content:center;}.wrap{max-width:480px;width:90%;padding:64px 0;}.kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#999;margin-bottom:12px;display:flex;align-items:center;gap:10px;}.kicker::before{content:\'\';width:20px;height:1px;background:#c8c7c3;}h1{font-family:\'DM Serif Display\',Georgia,serif;font-size:clamp(40px,6vw,60px);font-weight:400;line-height:1.05;margin-bottom:40px;}h1 em{font-style:italic;color:#999;}.items{display:flex;flex-direction:column;gap:16px;margin-bottom:32px;}a.item{display:flex;align-items:center;gap:20px;padding:22px 26px;border:1px solid #e2e1de;text-decoration:none;color:#1a1918;transition:border-color .2s;}a.item:hover{border-color:#1a1918;}.lbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#999;margin-bottom:4px;}.val{font-size:15px;font-weight:500;}.note{font-size:12px;color:#999;line-height:1.75;padding-top:24px;border-top:1px solid #e2e1de;}</style></head><body><div class="wrap"><p class="kicker">Forma3D \u00b7 Barcelona</p><h1>Contacta<br><em>con nosotros</em></h1><div class="items"><a href="mailto:contacto@forma3d.cat" class="item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="1" y="4" width="20" height="14" rx="2" stroke="#1a1918" stroke-width="1.4"/><path d="M1 7l10 6.5L21 7" stroke="#1a1918" stroke-width="1.4"/></svg><div><p class="lbl">Email</p><p class="val">contacto@forma3d.cat</p></div></a><a href="tel:+34614819874" class="item"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 3h4.5l1.5 4.5-2.5 1.5c1.2 2.4 3 4.2 5.5 5.5l1.5-2.5L19 13.5V18c0 .6-.5 1-1 1C7 19 3 9 3 4c0-.6.4-1 1-1z" stroke="#1a1918" stroke-width="1.4" stroke-linejoin="round"/></svg><div><p class="lbl">Tel\u00e9fono</p><p class="val">+34 614 819 874</p></div></a></div><p class="note">Respondemos en menos de 24h. Tambi\u00e9n puedes escribirnos por WhatsApp al mismo n\u00famero.</p></div></body></html>';
+  var win = window.open('', '_blank', 'width=560,height=500,resizable=yes,scrollbars=yes');
+  win.document.write(html);
+  win.document.close();
 }
-function closeContact(){
-  var m=document.getElementById('contact-modal');
-  m.style.display='none';
-  document.body.style.overflow='';
-}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContact();});
 </script>
 
 <script>
