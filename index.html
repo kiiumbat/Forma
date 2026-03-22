@@ -13,15 +13,32 @@
   --serif:'DM Serif Display',Georgia,serif;
   --sans:'DM Sans',sans-serif;
   --r:2px;
+  --nav-bg:rgba(255,255,255,0.92);
+}
+html.dark{
+  --w:#141312;--off:#1c1b1a;--g1:#242220;--g2:#2e2c2a;--g3:#3e3c3a;--g4:#7a7876;--g5:#a8a6a4;--blk:#f0efed;
+  --nav-bg:rgba(20,19,18,0.92);
 }
 html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--sans);color:var(--blk);background:var(--w);overflow-x:hidden}
+body{font-family:var(--sans);color:var(--blk);background:var(--w);overflow-x:hidden;transition:background .3s,color .3s}
+
+/* ── DARK TOGGLE ── */
+.dark-toggle{
+  background:none;border:1px solid var(--g2);cursor:pointer;
+  width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  color:var(--g4);transition:all .2s;flex-shrink:0;
+}
+.dark-toggle:hover{border-color:var(--blk);color:var(--blk)}
+.dark-toggle .ico-sun{display:none}
+.dark-toggle .ico-moon{display:block}
+html.dark .dark-toggle .ico-sun{display:block}
+html.dark .dark-toggle .ico-moon{display:none}
 
 /* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   height:68px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 56px;background:rgba(255,255,255,0.92);
+  padding:0 56px;background:var(--nav-bg);
   border-bottom:1px solid var(--g2);backdrop-filter:blur(12px);
 }
 .logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none}
@@ -307,6 +324,10 @@ footer ul li a:hover{color:var(--blk)}
     <li><a href="#" onclick="openContact();return false;">Contacto</a></li>
   </ul>
   <a href="#" class="nav-cta" onclick="openContact();return false;">Pedir ahora</a>
+  <button class="dark-toggle" onclick="toggleDark()" aria-label="Modo oscuro">
+    <svg class="ico-moon" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 10.5A6 6 0 015.5 2.5a6 6 0 108 8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+    <svg class="ico-sun" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -719,6 +740,15 @@ const to = new IntersectionObserver((entries)=>{
   });
 },{rootMargin:'-30% 0px -60% 0px'});
 sections.forEach(id=>{ const el=document.getElementById(id); if(el) to.observe(el); });
+
+// Dark mode
+function toggleDark(){
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('forma3d-dark', document.documentElement.classList.contains('dark') ? '1' : '0');
+}
+(function(){
+  if(localStorage.getItem('forma3d-dark')==='1') document.documentElement.classList.add('dark');
+})();
 </script>
 </body>
 </html>
